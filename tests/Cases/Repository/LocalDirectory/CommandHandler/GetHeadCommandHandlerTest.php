@@ -6,9 +6,9 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository\Local
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\GitDirectory;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Head;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 
 require __DIR__ . '/../../../../bootstrap.php';

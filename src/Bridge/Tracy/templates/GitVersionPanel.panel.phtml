@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
 
+use Tracy\Helpers;
+
 /** @var \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface $gitRepository */
 /** @var \SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface[] $blocks */
 
@@ -23,6 +25,11 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
         width: 1px;
         white-space: nowrap;
     }
+
+    #tracy-debug .nette-gitVersionPanel .source {
+        margin-top: 20px;
+        text-align: center;
+    }
 </style>
 
 <h1>Git Version</h1>
@@ -31,4 +38,10 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
 	<div class="tracy-inner-container">
 		<?php foreach($blocks as $block): echo $block->render($gitRepository); endforeach; ?>
 	</div>
+
+    <div class="tracy-inner-container">
+        <p class="source">
+            <code>Source: <?php echo Helpers::escapeHtml($gitRepository->getSource()) ?></code>
+        </p>
+    </div>
 </div>

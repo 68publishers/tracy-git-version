@@ -22,6 +22,14 @@ final class GitDirectoryException extends Exception implements ExceptionInterfac
 	}
 
 	/**
+	 * @return static
+	 */
+	public static function gitDirectoryNotProvided(): self
+	{
+		return new self('Git directory is not provided.');
+	}
+
+	/**
 	 * @param string $directory
 	 *
 	 * @return static

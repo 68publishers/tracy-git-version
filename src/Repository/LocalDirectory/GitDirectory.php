@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel;
+namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory;
 
 use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
 

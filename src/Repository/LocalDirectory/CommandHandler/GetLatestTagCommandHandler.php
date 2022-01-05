@@ -4,32 +4,21 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\GitDirectory;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
 
-final class GetLatestTagCommandHandler implements GitCommandHandlerInterface
+final class GetLatestTagCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
-	private GitDirectory $gitDirectory;
-
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\GitDirectory $gitDirectory
-	 */
-	public function __construct(GitDirectory $gitDirectory)
-	{
-		$this->gitDirectory = $gitDirectory;
-	}
-
 	/**
 	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand $getLatestTag
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag|NULL
+	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag|null
+	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
 	 */
 	public function __invoke(GetLatestTagCommand $getLatestTag): ?Tag
 	{
-		$tagsDirectory = $this->gitDirectory . '/refs/tags';
+		$tagsDirectory = sprintf('%s%srefs%stags', $this->getGitDirectory(), DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
 		if (!file_exists($tagsDirectory)) {
 			return NULL;
@@ -39,7 +28,7 @@ final class GetLatestTagCommandHandler implements GitCommandHandlerInterface
 		$latestTimestamp = 0;
 
 		foreach (scandir($tagsDirectory) as $tagName) {
-			$filename = $tagsDirectory . '/' . $tagName;
+			$filename = $tagsDirectory . DIRECTORY_SEPARATOR . $tagName;
 
 			if (!is_readable($filename)) {
 				continue;

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
 
 use Tracy\IBarPanel;
-use SixtyEightPublishers\TracyGitVersionPanel\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepository;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\CurrentStateBlock;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
 
@@ -41,13 +41,14 @@ final class GitVersionPanel implements IBarPanel
 	 */
 	public static function createDefault(?string $workingDirectory = NULL, string $directoryName = '.git'): self
 	{
-		$directory = GitDirectory::createAutoDetected($workingDirectory, $directoryName);
-
 		$repository = new RuntimeCachedGitRepository(
-			new GitRepository([
-				GetHeadCommand::class => new GetHeadCommandHandler($directory),
-				GetLatestTagCommand::class => new GetLatestTagCommandHandler($directory),
-			])
+			new LocalGitRepository(
+				GitDirectory::createAutoDetected($workingDirectory, $directoryName),
+				[
+					GetHeadCommand::class => new GetHeadCommandHandler(),
+					GetLatestTagCommand::class => new GetLatestTagCommandHandler(),
+				]
+			)
 		);
 
 		return new self($repository, [

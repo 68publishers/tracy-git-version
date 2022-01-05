@@ -6,7 +6,7 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
 
 use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException;
 
-final class GitRepository implements GitRepositoryInterface
+abstract class AbstractGitRepository implements GitRepositoryInterface
 {
 	/** @var \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface[] */
 	private array $handlers = [];
@@ -53,6 +53,6 @@ final class GitRepository implements GitRepositoryInterface
 	 */
 	public function supports(string $commandClassname): bool
 	{
-		return isset($this->handlers[$commandClassname]);
+		return isset($this->handlers[$commandClassname]) && $this->isAccessible();
 	}
 }

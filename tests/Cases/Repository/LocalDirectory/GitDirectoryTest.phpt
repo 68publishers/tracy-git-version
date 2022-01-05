@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases;
+namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository\LocalDirectory;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\GitDirectory;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../../bootstrap.php';
 
 final class GitDirectoryTest extends TestCase
 {
@@ -41,7 +41,7 @@ final class GitDirectoryTest extends TestCase
 
 	public function testCreateGitDirectoryDirectly(): void
 	{
-		$dir = __DIR__ . '/../files/test-git';
+		$dir = __DIR__ . '/../../../files/test-git';
 		$gitDirectory = GitDirectory::createFromGitDirectory($dir);
 
 		Assert::same(realpath($dir), (string) $gitDirectory);
@@ -49,13 +49,13 @@ final class GitDirectoryTest extends TestCase
 
 	public function testCreateGitDirectoryFromWorkingDirectory(): void
 	{
-		$realGitDirectoryPath = realpath(__DIR__ . '/../files/test-git');
+		$realGitDirectoryPath = realpath(__DIR__ . '/../../../files/test-git');
 
-		$gitDirectory = GitDirectory::createAutoDetected(__DIR__ . '/../files', 'test-git');
+		$gitDirectory = GitDirectory::createAutoDetected(__DIR__ . '/../../../files', 'test-git');
 
 		Assert::same($realGitDirectoryPath, (string) $gitDirectory);
 
-		$gitDirectory = GitDirectory::createAutoDetected(__DIR__ . '/../files/nested-directory-1/nested-directory-2', 'test-git');
+		$gitDirectory = GitDirectory::createAutoDetected(__DIR__ . '/../../../files/nested-directory-1/nested-directory-2', 'test-git');
 
 		Assert::same($realGitDirectoryPath, (string) $gitDirectory);
 	}

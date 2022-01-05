@@ -6,10 +6,10 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\BarCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Repository\SimpleGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\FooCommandHandler;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\BarCommandHandler;
 
@@ -17,12 +17,26 @@ require __DIR__ . '/../../bootstrap.php';
 
 final class RuntimeCachedGitRepositoryTest extends TestCase
 {
+	public function testRepositorySource() : void
+	{
+		$repository = $this->createRepository([]);
+
+		Assert::same('test', $repository->getSource());
+	}
+
+	public function testIsAccessibleMethod() : void
+	{
+		$repository = $this->createRepository([]);
+
+		Assert::true($repository->isAccessible());
+	}
+
 	public function testSupportsMethod() : void
 	{
-		$repository = new RuntimeCachedGitRepository(new GitRepository([
+		$repository = $this->createRepository([
 			FooCommand::class => new FooCommandHandler(),
 			BarCommand::class => new BarCommandHandler(),
-		]));
+		]);
 
 		Assert::true($repository->supports(FooCommand::class));
 		Assert::true($repository->supports(BarCommand::class));
@@ -34,16 +48,16 @@ final class RuntimeCachedGitRepositoryTest extends TestCase
 		$fooCommandHandler = new FooCommandHandler();
 		$barCommandHandler = new BarCommandHandler();
 
-		$repository = new RuntimeCachedGitRepository(new GitRepository([
+		$repository = $this->createRepository([
 			FooCommand::class => $fooCommandHandler,
 			BarCommand::class => $barCommandHandler,
-		]));
+		]);
 
-		Assert::same('foo', $repository->handle(new FooCommand()));
+		Assert::same('undefined/foo', $repository->handle(new FooCommand()));
 		Assert::same(200, $repository->handle(new BarCommand(100)));
 
 		# duplicated calling
-		Assert::same('foo', $repository->handle(new FooCommand()));
+		Assert::same('undefined/foo', $repository->handle(new FooCommand()));
 		Assert::same(200, $repository->handle(new BarCommand(100)));
 
 		# new calling (different argument)
@@ -51,6 +65,16 @@ final class RuntimeCachedGitRepositoryTest extends TestCase
 
 		Assert::same(1, $fooCommandHandler->callingCounter);
 		Assert::same(2, $barCommandHandler->callingCounter);
+	}
+
+	/**
+	 * @param array $handlers
+	 *
+	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository
+	 */
+	private function createRepository(array $handlers) : RuntimeCachedGitRepository
+	{
+		return new RuntimeCachedGitRepository(new SimpleGitRepository('test', TRUE, $handlers));
 	}
 }
 

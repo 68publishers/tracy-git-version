@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler;
 
+use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\AbstractLocalDirectoryCommandHandler;
 
-final class FooCommandHandler implements GitCommandHandlerInterface
+final class FooCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
 	public int $callingCounter = 0;
 
@@ -20,6 +21,18 @@ final class FooCommandHandler implements GitCommandHandlerInterface
 	{
 		$this->callingCounter++;
 
-		return 'foo';
+		return $this->getGitDirectoryPath() . '/foo';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getGitDirectoryPath(): string
+	{
+		try {
+			return (string) $this->getGitDirectory();
+		} catch (GitDirectoryException $e) {
+			return 'undefined';
+		}
 	}
 }

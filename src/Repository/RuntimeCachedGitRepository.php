@@ -21,6 +21,22 @@ final class RuntimeCachedGitRepository implements GitRepositoryInterface
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getSource(): string
+	{
+		return $this->inner->getSource();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isAccessible(): bool
+	{
+		return $this->inner->isAccessible();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function handle(GitCommandInterface $command)
 	{
 		$commandId = (string) $command;

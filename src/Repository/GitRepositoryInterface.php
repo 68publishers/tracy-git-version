@@ -6,6 +6,18 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
 
 interface GitRepositoryInterface
 {
+	public const SOURCE_GIT_DIRECTORY = 'git directory';
+
+	/**
+	 * @return string
+	 */
+	public function getSource(): string;
+
+	/**
+	 * @return bool
+	 */
+	public function isAccessible(): bool;
+
 	/**
 	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface $command
 	 *

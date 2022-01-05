@@ -6,9 +6,9 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository\Local
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\GitDirectory;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
 
 require __DIR__ . '/../../../../bootstrap.php';
