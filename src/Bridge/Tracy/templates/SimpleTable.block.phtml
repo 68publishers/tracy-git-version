@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
+
+use Tracy\Helpers;
+
+/** @var string|NULL $caption */
+/** @var array $rows */
+
+?>
+
+<?php if (NULL !== $caption): ?>
+<h2><?php echo Helpers::escapeHtml($caption) ?></h2>
+<?php endif; ?>
+
+<table>
+    <?php foreach ($rows as $k => $v): ?>
+    <tr>
+        <th><?php echo Helpers::escapeHtml($k) ?></th>
+        <td><?php echo Helpers::escapeHtml($v) ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
