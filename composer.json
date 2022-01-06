@@ -17,7 +17,8 @@
 	"require-dev": {
 		"friendsofphp/php-cs-fixer": "^2.19",
 		"nette/application": "^3.0.6",
-		"nette/di": "^3.0.3",
+		"nette/bootstrap": "^3.1",
+		"nette/di": "^3.0.5",
 		"nette/tester": "^2.3.4",
 		"roave/security-advisories": "dev-latest",
 		"symfony/console": "^4.0 | ^5.0 | ^6.0"
@@ -27,7 +28,8 @@
 		"symfony/console": "If you want to use a git repository cloning for production build purposes."
 	},
 	"conflict": {
-		"nette/di": "<3.0"
+		"nette/di": "<3.0",
+		"nette/schema": "<1.2"
 	},
 	"autoload": {
 		"psr-4": {
