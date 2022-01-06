@@ -13,7 +13,7 @@ final class GetLatestTagCommandHandler extends AbstractLocalDirectoryCommandHand
 	/**
 	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand $getLatestTag
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag|null
+	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag|NULL
 	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
 	 */
 	public function __invoke(GetLatestTagCommand $getLatestTag): ?Tag

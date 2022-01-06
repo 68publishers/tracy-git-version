@@ -7,17 +7,19 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository;
 use Tester\Assert;
 use Tester\TestCase;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\BarCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\ExportedFooCommandHandler;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\BarCommandHandler;
 
 require __DIR__ . '/../../bootstrap.php';
 
-final class LocalGitRepositoryTest extends TestCase
+final class ExportedGitRepositoryTest extends TestCase
 {
 	public function testRepositorySource() : void
 	{
@@ -40,7 +42,7 @@ final class LocalGitRepositoryTest extends TestCase
 	public function testSupportsMethod() : void
 	{
 		$handlers = [
-			FooCommand::class => new LocalDirectoryFooCommandHandler(),
+			FooCommand::class => new ExportedFooCommandHandler(),
 			BarCommand::class => new BarCommandHandler(),
 		];
 
@@ -63,7 +65,7 @@ final class LocalGitRepositoryTest extends TestCase
 	{
 		# prepare commands and handlers
 		$handlers = [
-			FooCommand::class => new LocalDirectoryFooCommandHandler(),
+			FooCommand::class => new ExportedFooCommandHandler(),
 			BarCommand::class => new BarCommandHandler(),
 		];
 
@@ -73,7 +75,7 @@ final class LocalGitRepositoryTest extends TestCase
 		# do assertions on valid repository
 		$repository = $this->createValidGitRepository($handlers);
 
-		Assert::same($this->getValidGitDirectoryPath() . '/foo', $repository->handle($fooCommand));
+		Assert::same('FOO', $repository->handle($fooCommand));
 		Assert::same(200, $repository->handle($barCommand));
 
 		$unhandledCommand = new GetHeadCommand();
@@ -109,31 +111,22 @@ final class LocalGitRepositoryTest extends TestCase
 	/**
 	 * @param array $handlers
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
+	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository
 	 */
-	private function createValidGitRepository(array $handlers) : LocalGitRepository
+	private function createValidGitRepository(array $handlers) : ExportedGitRepository
 	{
-		return new LocalGitRepository(GitDirectory::createFromGitDirectory($this->getValidGitDirectoryPath()), $handlers, 'test');
+		return new ExportedGitRepository(__DIR__ . '/../../files/export/test.json', $handlers, 'test');
 	}
 
 	/**
 	 * @param array $handlers
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository
+	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository
 	 */
-	private function createInvalidGitRepository(array $handlers) : LocalGitRepository
+	private function createInvalidGitRepository(array $handlers) : ExportedGitRepository
 	{
-		return new LocalGitRepository(GitDirectory::createAutoDetected(sys_get_temp_dir(), 'non-existent-git-directory'), $handlers, 'test');
-	}
-
-	/**
-	 * @return string
-	 */
-	private function getValidGitDirectoryPath() : string
-	{
-		return realpath(__DIR__ . '/../../files/test-git');
+		return new ExportedGitRepository(__DIR__ . '/../../files/export/non-existent-export.json', $handlers, 'test');
 	}
 }
 
-(new LocalGitRepositoryTest())->run();
+(new ExportedGitRepositoryTest())->run();

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler;
 
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\AbstractExportedCommandHandler;
 
-final class FooCommandHandler implements GitCommandHandlerInterface
+final class ExportedFooCommandHandler extends AbstractExportedCommandHandler
 {
 	public int $callingCounter = 0;
 
@@ -16,10 +16,10 @@ final class FooCommandHandler implements GitCommandHandlerInterface
 	 *
 	 * @return string
 	 */
-	public function __invoke(FooCommand $command): string
+	public function __invoke(FooCommand $command): ?string
 	{
 		$this->callingCounter++;
 
-		return 'foo';
+		return $this->getExportedValue()['foo'] ?? NULL;
 	}
 }

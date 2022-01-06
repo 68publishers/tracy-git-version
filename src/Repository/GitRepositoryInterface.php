@@ -7,6 +7,7 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
 interface GitRepositoryInterface
 {
 	public const SOURCE_GIT_DIRECTORY = 'git directory';
+	public const SOURCE_EXPORT = 'export';
 
 	/**
 	 * @return string

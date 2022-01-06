@@ -13,6 +13,7 @@ use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandExceptio
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Repository\SimpleGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\FooCommandHandler;
+use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\BarCommandHandler;
 
 require __DIR__ . '/../../bootstrap.php';

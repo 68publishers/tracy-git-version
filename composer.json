@@ -11,6 +11,7 @@
 	],
 	"require": {
 		"php": "^7.4 | ^8.0",
+		"ext-json": "*",
 		"tracy/tracy": "^2.6.0"
 	},
 	"require-dev": {
@@ -18,10 +19,12 @@
 		"nette/application": "^3.0.6",
 		"nette/di": "^3.0.3",
 		"nette/tester": "^2.3.4",
-		"roave/security-advisories": "dev-latest"
+		"roave/security-advisories": "dev-latest",
+		"symfony/console": "^4.0 | ^5.0 | ^6.0"
 	},
 	"suggest": {
-		"nette/di": "For an integration with Nette Framework."
+		"nette/di": "For an integration with Nette Framework.",
+		"symfony/console": "If you want to use a git repository cloning for production build purposes."
 	},
 	"conflict": {
 		"nette/di": "<3.0"
@@ -39,6 +42,9 @@
 	"config": {
 		"sort-packages": true
 	},
+	"bin": [
+		"tracy-git-version-panel"
+	],
 	"scripts": {
 		"php-cs-fixer": [
 			"vendor/bin/php-cs-fixer fix -v"

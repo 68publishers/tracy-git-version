@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+$possibleAutoloadFiles = [__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__ . '/vendor/autoload.php'];
+$autoloadFile = NULL;
+
+foreach ($possibleAutoloadFiles as $possibleAutoloadFile) {
+	if (file_exists($possibleAutoloadFile)) {
+		$autoloadFile = $possibleAutoloadFile;
+
+		break;
+	}
+}
+
+if (NULL === $autoloadFile) {
+	throw new RuntimeException('Unable to find composer autoload.php file.');
+}
+
+/** @noinspection PhpIncludeInspection */
+require_once $autoloadFile;
+
+unset($possibleAutoloadFiles, $possibleAutoloadFile, $autoloadFile);
+
+use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Symfony\Console\Application;
+
+$application = new Application();
+$application->run();
+
+__HALT_COMPILER();

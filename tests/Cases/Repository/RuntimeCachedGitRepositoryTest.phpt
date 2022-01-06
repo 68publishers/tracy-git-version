@@ -11,6 +11,7 @@ use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Repository\SimpleGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\FooCommandHandler;
+use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
 use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\BarCommandHandler;
 
 require __DIR__ . '/../../bootstrap.php';
@@ -53,11 +54,11 @@ final class RuntimeCachedGitRepositoryTest extends TestCase
 			BarCommand::class => $barCommandHandler,
 		]);
 
-		Assert::same('undefined/foo', $repository->handle(new FooCommand()));
+		Assert::same('foo', $repository->handle(new FooCommand()));
 		Assert::same(200, $repository->handle(new BarCommand(100)));
 
 		# duplicated calling
-		Assert::same('undefined/foo', $repository->handle(new FooCommand()));
+		Assert::same('foo', $repository->handle(new FooCommand()));
 		Assert::same(200, $repository->handle(new BarCommand(100)));
 
 		# new calling (different argument)
