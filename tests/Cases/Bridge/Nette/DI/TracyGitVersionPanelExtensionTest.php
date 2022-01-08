@@ -8,9 +8,10 @@ use Tracy\Bar;
 use Tester\Assert;
 use Tester\TestCase;
 use Nette\DI\Container;
-use Nette\Bootstrap\Configurator;
 use Nette\DI\Definitions\Statement;
 use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\GitVersionPanel;
+use SixtyEightPublishers\TracyGitVersionPanel\Tests\Helper\ContainerHelper;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Nette\DI\TracyGitVersionPanelExtension;
 
 require __DIR__ . '/../../../../bootstrap.php';
@@ -34,6 +35,9 @@ final class TracyGitVersionPanelExtensionTest extends TestCase
 		assert($bar instanceof Bar);
 
 		Assert::type(GitVersionPanel::class, $bar->getPanel(GitVersionPanel::class));
+		Assert::type(GitRepositoryInterface::class, $container->getByType(GitRepositoryInterface::class, FALSE));
+
+		ContainerHelper::clearCache(get_class($container));
 	}
 
 	public function testBasicIntegrationWithoutDebugMode(): void
@@ -51,6 +55,9 @@ final class TracyGitVersionPanelExtensionTest extends TestCase
 		assert($bar instanceof Bar);
 
 		Assert::null($bar->getPanel(GitVersionPanel::class));
+		Assert::type(GitRepositoryInterface::class, $container->getByType(GitRepositoryInterface::class, FALSE));
+
+		ContainerHelper::clearCache(get_class($container));
 	}
 
 	/**
@@ -61,18 +68,17 @@ final class TracyGitVersionPanelExtensionTest extends TestCase
 	 */
 	private function createContainer(array $config = [], bool $debugMode = FALSE): Container
 	{
-		$configurator = new Configurator();
-
-		$configurator->setTempDirectory(TEMP_PATH . '/TracyGitVersionPanelExtensionTest')
-			->setDebugMode($debugMode)
-			->addConfig([
-				'extensions' => [
-					'68publishers.tracy_git_version_panel' => new Statement(TracyGitVersionPanelExtension::class),
-				],
-			])
-			->addConfig($config);
-
-		return $configurator->createContainer();
+		return ContainerHelper::create(array_merge(
+			[
+			'extensions' => [
+				'68publishers.tracy_git_version_panel' => new Statement(TracyGitVersionPanelExtension::class),
+			],
+			'application' => [
+				'scanDirs' => FALSE,
+			],
+		],
+			$config
+		), $debugMode);
 	}
 }
 

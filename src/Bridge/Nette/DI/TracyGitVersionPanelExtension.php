@@ -64,15 +64,12 @@ final class TracyGitVersionPanelExtension extends CompilerExtension
 	 */
 	public function loadConfiguration(): void
 	{
-		if (!$this->isDebugMode()) {
-			return;
-		}
-
 		$builder = $this->getContainerBuilder();
 
 		# default git repository service
 		$builder->addDefinition($this->prefix('git_repository'))
-			->setAutowired(FALSE)
+			->setAutowired(GitRepositoryInterface::class)
+			->setType(GitRepositoryInterface::class)
 			->setFactory($this->prefix('@git_repository.runtime_cached'));
 
 		# runtime cached git repository
@@ -101,10 +98,6 @@ final class TracyGitVersionPanelExtension extends CompilerExtension
 	 */
 	public function beforeCompile(): void
 	{
-		if (!$this->isDebugMode()) {
-			return;
-		}
-
 		$builder = $this->getContainerBuilder();
 
 		# pass git repositories into resolvable repository
@@ -120,6 +113,10 @@ final class TracyGitVersionPanelExtension extends CompilerExtension
 		]);
 
 		# add panel into Tracy
+		if (!$this->isDebugMode()) {
+			return;
+		}
+
 		$barServiceName = $builder->getByType(Bar::class, FALSE);
 
 		if (NULL === $barServiceName) {

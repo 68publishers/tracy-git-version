@@ -55,10 +55,6 @@ final class TracyGitVersionPanelExportExtension extends CompilerExtension
 			));
 		}
 
-		if (!$this->isDebugMode()) {
-			return;
-		}
-
 		$builder = $this->getContainerBuilder();
 
 		# exported git repository
@@ -70,13 +66,5 @@ final class TracyGitVersionPanelExportExtension extends CompilerExtension
 				'source' => $this->config->source_name,
 			])
 			->addTag(TracyGitVersionPanelExtension::TAG_GIT_REPOSITORY, 50);
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function isDebugMode(): bool
-	{
-		return $this->getContainerBuilder()->parameters['debugMode'] ?? FALSE;
 	}
 }

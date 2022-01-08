@@ -16,13 +16,6 @@ require __DIR__ . '/../../../../../bootstrap.php';
 
 final class ExportRepositoryCommandTest extends TestCase
 {
-	protected function tearDown() : void
-	{
-		if (file_exists(TEMP_PATH . '/exports')) {
-			shell_exec('rm -rf ' . TEMP_PATH . '/exports');
-		}
-	}
-
 	public function testWithoutArguments() : void
 	{
 		Assert::exception(function () {
@@ -47,7 +40,10 @@ final class ExportRepositoryCommandTest extends TestCase
 
 		Assert::same(0, $commandTester->getStatusCode());
 
-		$this->doTestExportedFile(TEMP_PATH . '/exports/git-repository-export.json');
+		$filename = TEMP_PATH . '/exports/git-repository-export.json';
+
+		$this->doTestExportedFile($filename);
+		$this->removeFile($filename);
 	}
 
 	public function testWithCustomConfigAndOutputFileOption() : void
@@ -59,7 +55,10 @@ final class ExportRepositoryCommandTest extends TestCase
 
 		Assert::same(0, $commandTester->getStatusCode());
 
-		$this->doTestExportedFile(TEMP_PATH . '/exports/git-repository-export-custom.json');
+		$filename = TEMP_PATH . '/exports/git-repository-export-custom.json';
+
+		$this->doTestExportedFile($filename);
+		$this->removeFile($filename);
 	}
 
 	public function testDumpOnly() : void
@@ -127,6 +126,18 @@ final class ExportRepositoryCommandTest extends TestCase
 				'commit_hash' => '8f2c308e3a5330b7924634edd7aa38eec97a4114',
 			],
 		], $json);
+	}
+
+	/**
+	 * @param string $filename
+	 *
+	 * @return void
+	 */
+	private function removeFile(string $filename) : void
+	{
+		if (file_exists($filename)) {
+			@unlink($filename);
+		}
 	}
 }
 
