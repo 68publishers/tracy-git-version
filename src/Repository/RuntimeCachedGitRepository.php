@@ -37,6 +37,14 @@ final class RuntimeCachedGitRepository implements GitRepositoryInterface
 	/**
 	 * {@inheritDoc}
 	 */
+	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void
+	{
+		$this->inner->addHandler($commandClassname, $handler);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function handle(GitCommandInterface $command)
 	{
 		$commandId = (string) $command;

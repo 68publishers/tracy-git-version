@@ -7,14 +7,9 @@ namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
 use Tracy\IBarPanel;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
 use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\CurrentStateBlock;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
 
 final class GitVersionPanel implements IBarPanel
 {
@@ -36,24 +31,33 @@ final class GitVersionPanel implements IBarPanel
 	/**
 	 * @param string|NULL $workingDirectory
 	 * @param string      $directoryName
+	 * @param array       $handlers
 	 *
 	 * @return static
 	 */
-	public static function createDefault(?string $workingDirectory = NULL, string $directoryName = '.git'): self
+	public static function createDefault(?string $workingDirectory = NULL, string $directoryName = '.git', array $handlers = []): self
 	{
-		$repository = new RuntimeCachedGitRepository(
-			new LocalGitRepository(
-				GitDirectory::createAutoDetected($workingDirectory, $directoryName),
-				[
-					GetHeadCommand::class => new GetHeadCommandHandler(),
-					GetLatestTagCommand::class => new GetLatestTagCommandHandler(),
-				]
-			)
-		);
+		$repository = new RuntimeCachedGitRepository(LocalGitRepository::createDefault($workingDirectory, $directoryName));
+
+		foreach ($handlers as $command => $handler) {
+			$repository->addHandler($command, $handler);
+		}
 
 		return new self($repository, [
 			new CurrentStateBlock(),
 		]);
+	}
+
+	/**
+	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface $block
+	 *
+	 * @return $this
+	 */
+	public function addBlock(BlockInterface $block): self
+	{
+		$this->blocks[] = $block;
+
+		return $this;
 	}
 
 	/**

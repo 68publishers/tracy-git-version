@@ -22,10 +22,7 @@ abstract class AbstractGitRepository implements GitRepositoryInterface
 	}
 
 	/**
-	 * @param string                                                                           $commandClassname
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface $handler
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void
 	{

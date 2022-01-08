@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
 
+use SixtyEightPublishers\TracyGitVersionPanel\Exception\BadMethodCallException;
 use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException;
 
 final class ResolvableGitRepository implements GitRepositoryInterface
@@ -41,6 +42,14 @@ final class ResolvableGitRepository implements GitRepositoryInterface
 		$repository = $this->getResolvedRepository();
 
 		return NULL !== $repository ? $repository->isAccessible() : FALSE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void
+	{
+		throw BadMethodCallException::cantAddHandlerToResolvableGitRepository($commandClassname, get_class($handler));
 	}
 
 	/**

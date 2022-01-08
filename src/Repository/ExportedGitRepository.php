@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
 
 use JsonException;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
 use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\ExportedGitCommandHandlerInterface;
 
 final class ExportedGitRepository extends AbstractGitRepository
@@ -28,6 +32,19 @@ final class ExportedGitRepository extends AbstractGitRepository
 		$this->source = $source;
 
 		parent::__construct($handlers);
+	}
+
+	/**
+	 * @param string $file
+	 *
+	 * @return static
+	 */
+	public static function createDefault(string $file): self
+	{
+		return new self($file, [
+			GetHeadCommand::class => new GetHeadCommandHandler(),
+			GetLatestTagCommand::class => new GetLatestTagCommandHandler(),
+		]);
 	}
 
 	/**

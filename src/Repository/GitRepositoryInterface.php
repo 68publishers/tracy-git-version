@@ -20,6 +20,14 @@ interface GitRepositoryInterface
 	public function isAccessible(): bool;
 
 	/**
+	 * @param string                                                                           $commandClassname
+	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface $handler
+	 *
+	 * @return void
+	 */
+	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void;
+
+	/**
 	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface $command
 	 *
 	 * @return mixed
