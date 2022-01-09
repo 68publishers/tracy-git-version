@@ -121,7 +121,7 @@ Results from both handlers should be the same type of value.
 
 ### Registering custom commands
 
-If you are using pure Tracy you must register custom handlers for commands directly into the repositories.
+If you are using standalone Tracy you must register custom handlers for commands directly into the repositories.
 
 ```php
 <?php
@@ -251,7 +251,7 @@ class HistoryExporter implements ExporterInterface
 }
 ```
 
-If you need a more realistic example please look into some [existing exporter](../src/Export/PartialExporter/HeadExporter.php).
+If you need a more realistic example please look into some [existing exporter](../src/Export).
 
 The configuration file might look something like this:
 
