@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Export;
+namespace SixtyEightPublishers\TracyGitVersion\Export;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 interface ExporterInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Export\Config                          $config
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface|null $gitRepository
+	 * @param \SixtyEightPublishers\TracyGitVersion\Export\Config                          $config
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface|null $gitRepository
 	 *
 	 * @return array
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException
 	 */
 	public function export(Config $config, ?GitRepositoryInterface $gitRepository): array;
 }

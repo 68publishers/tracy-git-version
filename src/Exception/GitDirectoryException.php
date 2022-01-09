@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Exception;
+namespace SixtyEightPublishers\TracyGitVersion\Exception;
 
 use Exception;
 

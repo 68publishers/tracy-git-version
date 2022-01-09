@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository\Export\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Repository\Export\CommandHandler;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
 
 require __DIR__ . '/../../../../bootstrap.php';
 

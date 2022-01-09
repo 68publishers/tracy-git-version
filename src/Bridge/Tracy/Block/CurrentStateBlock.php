@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Head;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
 
 final class CurrentStateBlock implements BlockInterface
 {

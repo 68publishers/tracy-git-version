@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Export;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Export;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\LocalDirectoryExporter;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Export\LocalDirectoryExporter;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 
 require __DIR__ . '/../../bootstrap.php';
 

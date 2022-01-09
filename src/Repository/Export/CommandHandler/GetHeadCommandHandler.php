@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Head;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 
 final class GetHeadCommandHandler extends AbstractExportedCommandHandler
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand $command
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand $command
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Head
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head
 	 */
 	public function __invoke(GetHeadCommand $command): Head
 	{

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler;
 
 abstract class AbstractExportedCommandHandler implements ExportedGitCommandHandlerInterface
 {

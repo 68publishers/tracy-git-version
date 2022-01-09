@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Exception;
+namespace SixtyEightPublishers\TracyGitVersion\Exception;
 
 use Exception;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
 
 final class ExportConfigException extends Exception implements ExceptionInterface
 {

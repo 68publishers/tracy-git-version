@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\Entity;
 
 final class Tag
 {
@@ -11,8 +11,8 @@ final class Tag
 	private CommitHash $commitHash;
 
 	/**
-	 * @param string                                                                  $name
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash $commitHash
+	 * @param string                                                             $name
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash $commitHash
 	 */
 	public function __construct(string $name, CommitHash $commitHash)
 	{
@@ -29,7 +29,7 @@ final class Tag
 	}
 
 	/**
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash
 	 */
 	public function getCommitHash(): CommitHash
 	{

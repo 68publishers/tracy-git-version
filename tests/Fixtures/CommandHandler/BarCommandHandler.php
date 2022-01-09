@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\BarCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\BarCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface;
 
 final class BarCommandHandler implements GitCommandHandlerInterface
 {
 	public int $callingCounter = 0;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\BarCommand $command
+	 * @param \SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\BarCommand $command
 	 *
 	 * @return int
 	 */

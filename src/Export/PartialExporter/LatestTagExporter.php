@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Export\PartialExporter;
+namespace SixtyEightPublishers\TracyGitVersion\Export\PartialExporter;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\ExporterInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\BadMethodCallException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag;
+use SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface;
+use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
 
 final class LatestTagExporter implements ExporterInterface
 {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException
 	 */
 	public function export(Config $config, ?GitRepositoryInterface $gitRepository): array
 	{

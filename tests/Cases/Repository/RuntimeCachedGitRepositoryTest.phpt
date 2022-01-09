@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Repository;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\BarCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Repository\SimpleGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\FooCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\BarCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\BarCommand;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Repository\SimpleGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\FooCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\BarCommandHandler;
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -71,7 +71,7 @@ final class RuntimeCachedGitRepositoryTest extends TestCase
 	/**
 	 * @param array $handlers
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository
 	 */
 	private function createRepository(array $handlers) : RuntimeCachedGitRepository
 	{

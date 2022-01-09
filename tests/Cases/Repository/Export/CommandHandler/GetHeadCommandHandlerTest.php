@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository\Export\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Repository\Export\CommandHandler;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Head;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetHeadCommandHandler;
 
 require __DIR__ . '/../../../../bootstrap.php';
 

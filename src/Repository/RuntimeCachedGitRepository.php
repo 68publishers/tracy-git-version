@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
 final class RuntimeCachedGitRepository implements GitRepositoryInterface
 {
@@ -11,7 +11,7 @@ final class RuntimeCachedGitRepository implements GitRepositoryInterface
 	private array $cache = [];
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface $inner
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface $inner
 	 */
 	public function __construct(GitRepositoryInterface $inner)
 	{

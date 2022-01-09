@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Exception;
+namespace SixtyEightPublishers\TracyGitVersion\Exception;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Export\ExporterInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ResolvableGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
 
 final class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Export\ExporterInterface $exporter
+	 * @param \SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface $exporter
 	 *
 	 * @return static
 	 */

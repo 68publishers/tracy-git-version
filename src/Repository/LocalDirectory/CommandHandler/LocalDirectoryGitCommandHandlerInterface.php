@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 
 interface LocalDirectoryGitCommandHandlerInterface extends GitCommandHandlerInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory $gitDirectory
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory $gitDirectory
 	 *
 	 * @return $this
 	 */

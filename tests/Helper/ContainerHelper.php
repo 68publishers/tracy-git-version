@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Helper;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Helper;
 
 use Nette\DI\Container;
 use Nette\Utils\Finder;

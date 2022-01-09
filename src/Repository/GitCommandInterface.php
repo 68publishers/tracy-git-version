@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
 interface GitCommandInterface
 {

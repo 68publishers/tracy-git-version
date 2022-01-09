@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Export\PartialExporter;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Export\PartialExporter;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\PartialExporter\HeadExporter;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\HeadExporter;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 
 require __DIR__ . '/../../../bootstrap.php';
 

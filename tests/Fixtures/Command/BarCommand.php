@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
 
 final class BarCommand implements GitCommandInterface
 {

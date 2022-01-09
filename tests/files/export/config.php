@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 
 return Config::createDefault()
 	->setGitDirectory(GitDirectory::createFromGitDirectory(__DIR__ . '/../test-git'))

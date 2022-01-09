@@ -21,7 +21,7 @@ require_once $autoloadFile;
 
 unset($possibleAutoloadFiles, $possibleAutoloadFile, $autoloadFile);
 
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Symfony\Console\Application;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Application;
 
 $application = new Application();
 $application->run();

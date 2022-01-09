@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy;
 
 use Throwable;
 

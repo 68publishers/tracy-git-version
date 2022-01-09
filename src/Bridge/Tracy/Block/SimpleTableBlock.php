@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Helpers;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Helpers;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 final class SimpleTableBlock implements BlockInterface
 {

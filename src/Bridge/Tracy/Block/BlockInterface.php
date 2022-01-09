@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 interface BlockInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface $gitRepository
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface $gitRepository
 	 *
 	 * @return string
 	 * @throws \Throwable

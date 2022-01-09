@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface;
 
 interface ExportedGitCommandHandlerInterface extends GitCommandHandlerInterface
 {

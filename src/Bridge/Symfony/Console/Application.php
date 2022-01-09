@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Symfony\Console;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console;
 
 use PhpCsFixer\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Application as BaseApplication;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Symfony\Console\Command\ExportRepositoryCommand;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Command\ExportRepositoryCommand;
 
 final class Application extends BaseApplication
 {

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Repository;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\BarCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\ExportedFooCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\BarCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\BarCommand;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\ExportedFooCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\BarCommandHandler;
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -111,7 +111,7 @@ final class ExportedGitRepositoryTest extends TestCase
 	/**
 	 * @param array $handlers
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository
 	 */
 	private function createValidGitRepository(array $handlers) : ExportedGitRepository
 	{
@@ -121,7 +121,7 @@ final class ExportedGitRepositoryTest extends TestCase
 	/**
 	 * @param array $handlers
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository
 	 */
 	private function createInvalidGitRepository(array $handlers) : ExportedGitRepository
 	{

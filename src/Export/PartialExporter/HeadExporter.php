@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Export\PartialExporter;
+namespace SixtyEightPublishers\TracyGitVersion\Export\PartialExporter;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\ExporterInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\BadMethodCallException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface;
+use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 final class HeadExporter implements ExporterInterface
 {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException
 	 */
 	public function export(Config $config, ?GitRepositoryInterface $gitRepository): array
 	{
@@ -27,7 +27,7 @@ final class HeadExporter implements ExporterInterface
 			return [];
 		}
 
-		/** @var \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Head $head */
+		/** @var \SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head $head */
 		$head = $gitRepository->handle(new GetHeadCommand());
 
 		return [

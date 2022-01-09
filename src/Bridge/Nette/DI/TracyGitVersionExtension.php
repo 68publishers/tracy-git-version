@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Nette\DI;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI;
 
 use Tracy\Bar;
 use Nette\Schema\Expect;
@@ -10,19 +10,19 @@ use Nette\Schema\Schema;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Definitions\Statement;
 use Nette\DI\Definitions\ServiceDefinition;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\GitVersionPanel;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ResolvableGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\CurrentStateBlock;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\CurrentStateBlock;
+use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
 
-final class TracyGitVersionPanelExtension extends CompilerExtension
+final class TracyGitVersionExtension extends CompilerExtension
 {
 	public const TAG_GIT_REPOSITORY = '68publishers.tracy_git_version_panel.tag.git_repository';
 

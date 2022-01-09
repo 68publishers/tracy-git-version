@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\BadMethodCallException;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException;
+use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
+use SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException;
 
 final class ResolvableGitRepository implements GitRepositoryInterface
 {
-	/** @var \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface[]  */
+	/** @var \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface[]  */
 	private array $repositories;
 
 	private bool $resolved = FALSE;
@@ -17,7 +17,7 @@ final class ResolvableGitRepository implements GitRepositoryInterface
 	private ?GitRepositoryInterface $resolvedRepository = NULL;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface[] $repositories
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface[] $repositories
 	 */
 	public function __construct(array $repositories)
 	{
@@ -77,7 +77,7 @@ final class ResolvableGitRepository implements GitRepositoryInterface
 	}
 
 	/**
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface|NULL
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface|NULL
 	 */
 	private function getResolvedRepository(): ?GitRepositoryInterface
 	{

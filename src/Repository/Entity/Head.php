@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\Entity;
 
 final class Head
 {
@@ -11,8 +11,8 @@ final class Head
 	private ?CommitHash $commitHash;
 
 	/**
-	 * @param string|NULL                                                                  $branch
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash|NULL $commitHash
+	 * @param string|NULL                                                             $branch
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash|NULL $commitHash
 	 */
 	public function __construct(?string $branch, ?CommitHash $commitHash)
 	{
@@ -29,7 +29,7 @@ final class Head
 	}
 
 	/**
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash|NULL
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash|NULL
 	 */
 	public function getCommitHash(): ?CommitHash
 	{

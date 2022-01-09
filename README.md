@@ -1,5 +1,5 @@
 <div align="center">
-<h1 align="center">Tracy Git version panel</h1>
+<h1 align="center">Tracy Git version</h1>
 
 Simple and extensible panel for [Tracy](https://github.com/nette/tracy) that shows information from Git.
 
@@ -17,10 +17,10 @@ Simple and extensible panel for [Tracy](https://github.com/nette/tracy) that sho
 
 ## Installation
 
-The best way to install `68publishers/tracy-git-version-panel` is using Composer:
+The best way to install `68publishers/tracy-git-version` is using Composer:
 
 ```bash
-$ composer require 68publishers/tracy-git-version-panel
+$ composer require 68publishers/tracy-git-version
 ```
 
 ## Basic integration
@@ -33,7 +33,7 @@ The simplest way how to register the panel into Tracy is by creating a default i
 <?php
 
 use Tracy\Debugger;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\GitVersionPanel;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
 
 Debugger::getBar()->addPanel(GitVersionPanel::createDefault());
 ```
@@ -44,7 +44,7 @@ Basic integration into Nette is really simple. Just register an extension.
 
 ```neon
 extensions:
-	68publishers.tracy_git_version_panel: SixtyEightPublishers\TracyGitVersionPanel\Bridge\Nette\DI\TracyGitVersionPanelExtension
+	68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
 ```
 
 And everything works 😉
@@ -62,12 +62,12 @@ You must create repositories and the panel manually but there is not much work t
 <?php
 
 use Tracy\Debugger;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\GitVersionPanel;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ResolvableGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\CurrentStateBlock;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\CurrentStateBlock;
 
 # create a repository that reads from the .git directory:
 $localGitRepository = LocalGitRepository::createDefault();
@@ -91,14 +91,14 @@ The setup for Nette is more simple. Just add another extension into your neon co
 
 ```neon
 extensions:
-	68publishers.tracy_git_version_panel: SixtyEightPublishers\TracyGitVersionPanel\Bridge\Nette\DI\TracyGitVersionPanelExtension
-	68publishers.tracy_git_version_panel.export: SixtyEightPublishers\TracyGitVersionPanel\Bridge\Nette\DI\TracyGitVersionPanelExportExtension
+	68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
+	68publishers.tracy_git_version.export: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExportExtension
 ```
 
 The default name for the exported file is `%tempDir%/git-version/repository.json` but you can change it.
 
 ```neon
-68publishers.tracy_git_version_panel.export:
+68publishers.tracy_git_version.export:
     export_filename: %tempDir%/my/custom/path.json
 ```
 
@@ -108,7 +108,7 @@ The export file should be created by executing a script that is located in the c
 The script is independent of the application so you must provide the filename of the exported file as an option.
 
 ```bash
-$ vendor/bin/tracy-git-version-panel export-repository --output-file <your_temp>/git-version/repository.json -vv
+$ vendor/bin/tracy-git-version export-repository --output-file <your_temp>/git-version/repository.json -vv
 ```
 
 ## Advanced guide

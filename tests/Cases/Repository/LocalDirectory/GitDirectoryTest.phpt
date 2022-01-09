@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository\LocalDirectory;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Repository\LocalDirectory;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
 
 require __DIR__ . '/../../../bootstrap.php';
 

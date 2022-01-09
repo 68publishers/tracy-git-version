@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Export;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Export;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
 
 require __DIR__ . '/../../bootstrap.php';
 

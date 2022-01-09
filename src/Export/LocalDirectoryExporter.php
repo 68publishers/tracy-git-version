@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Export;
+namespace SixtyEightPublishers\TracyGitVersion\Export;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 final class LocalDirectoryExporter implements ExporterInterface
 {

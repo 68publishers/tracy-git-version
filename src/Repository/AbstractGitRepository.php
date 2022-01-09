@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException;
+use SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException;
 
 abstract class AbstractGitRepository implements GitRepositoryInterface
 {
-	/** @var \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface[] */
+	/** @var \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface[] */
 	private array $handlers = [];
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface[] $handlers
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface[] $handlers
 	 */
 	public function __construct(array $handlers = [])
 	{

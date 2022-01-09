@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Export;
+namespace SixtyEightPublishers\TracyGitVersion\Export;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\PartialExporter\HeadExporter;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\PartialExporter\LatestTagExporter;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\HeadExporter;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\LatestTagExporter;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
 
 final class Config
 {
@@ -87,7 +87,7 @@ final class Config
 	 * @param string $name
 	 *
 	 * @return mixed
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException
 	 */
 	public function getOption(string $name)
 	{
@@ -99,7 +99,7 @@ final class Config
 	}
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory $gitDirectory
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory $gitDirectory
 	 *
 	 * @return $this
 	 */
@@ -109,7 +109,7 @@ final class Config
 	}
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface[] $handlers
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface[] $handlers
 	 *
 	 * @return $this
 	 */
@@ -119,7 +119,7 @@ final class Config
 	}
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Export\ExporterInterface[] $exporters
+	 * @param \SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface[] $exporters
 	 *
 	 * @return $this
 	 */

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Bridge\Tracy;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Bridge\Tracy;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\GitVersionPanel;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
 
 require __DIR__ . '/../../../bootstrap.php';
 

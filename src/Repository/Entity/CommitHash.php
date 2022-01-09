@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\Entity;
 
 final class CommitHash
 {
@@ -25,7 +25,7 @@ final class CommitHash
 	}
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash $commitHash
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash $commitHash
 	 *
 	 * @return bool
 	 */

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Repository;
 
 use Tester\Assert;
 use Tester\TestCase;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\BarCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ResolvableGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\UnhandledCommandException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Repository\SimpleGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\FooCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler\BarCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\BarCommand;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException;
+use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Repository\SimpleGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\FooCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\LocalDirectoryFooCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler\BarCommandHandler;
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -118,7 +118,7 @@ final class ResolvableGitRepositoryTest extends TestCase
 	/**
 	 * @param array $repositories
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\ResolvableGitRepository
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository
 	 */
 	private function createRepository(array $repositories) : ResolvableGitRepository
 	{

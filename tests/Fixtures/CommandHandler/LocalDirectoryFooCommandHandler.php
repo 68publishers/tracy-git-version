@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\AbstractLocalDirectoryCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\AbstractLocalDirectoryCommandHandler;
 
 final class LocalDirectoryFooCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
 	public int $callingCounter = 0;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Command\FooCommand $command
+	 * @param \SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand $command
 	 *
 	 * @return string
 	 */

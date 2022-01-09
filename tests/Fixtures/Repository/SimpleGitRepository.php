@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Fixtures\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Repository;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\AbstractGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\AbstractGitRepository;
 
 final class SimpleGitRepository extends AbstractGitRepository
 {

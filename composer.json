@@ -1,5 +1,5 @@
 {
-	"name": "68publishers/tracy-git-version-panel",
+	"name": "68publishers/tracy-git-version",
 	"description": "Git version panel for Tracy.",
 	"keywords": ["68publishers", "tracy", "git", "git version", "nette"],
 	"license": "MIT",
@@ -33,19 +33,19 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"SixtyEightPublishers\\TracyGitVersionPanel\\": "src/"
+			"SixtyEightPublishers\\TracyGitVersion\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"SixtyEightPublishers\\TracyGitVersionPanel\\Tests\\": "tests/"
+			"SixtyEightPublishers\\TracyGitVersion\\Tests\\": "tests/"
 		}
 	},
 	"config": {
 		"sort-packages": true
 	},
 	"bin": [
-		"tracy-git-version-panel"
+		"tracy-git-version"
 	],
 	"scripts": {
 		"php-cs-fixer": [

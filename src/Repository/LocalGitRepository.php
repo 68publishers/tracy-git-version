@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\LocalDirectoryGitCommandHandlerInterface;
+use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\LocalDirectoryGitCommandHandlerInterface;
 
 final class LocalGitRepository extends AbstractGitRepository
 {
@@ -19,9 +19,9 @@ final class LocalGitRepository extends AbstractGitRepository
 	private string $source;
 
 	/**
-	 * @param string                                                                            $source
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory $gitDirectory
-	 * @param array                                                                             $handlers
+	 * @param string                                                                       $source
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory $gitDirectory
+	 * @param array                                                                        $handlers
 	 */
 	public function __construct(GitDirectory $gitDirectory, array $handlers = [], string $source = self::SOURCE_GIT_DIRECTORY)
 	{

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository;
+namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
 use JsonException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetHeadCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\ExportedGitCommandHandlerInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\ExportedGitCommandHandlerInterface;
 
 final class ExportedGitRepository extends AbstractGitRepository
 {

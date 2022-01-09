@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Bridge\Nette\DI;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Bridge\Nette\DI;
 
 use Tracy\Bar;
 use Tester\Assert;
 use Tester\TestCase;
 use Nette\DI\Container;
 use Nette\DI\Definitions\Statement;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\GitVersionPanel;
-use SixtyEightPublishers\TracyGitVersionPanel\Tests\Helper\ContainerHelper;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Nette\DI\TracyGitVersionPanelExtension;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
+use SixtyEightPublishers\TracyGitVersion\Tests\Helper\ContainerHelper;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension;
 
 require __DIR__ . '/../../../../bootstrap.php';
 
 /**
  * @testCase
  */
-final class TracyGitVersionPanelExtensionTest extends TestCase
+final class TracyGitVersionExtensionTest extends TestCase
 {
 	public function testBasicIntegrationInDebugMode(): void
 	{
@@ -71,7 +71,7 @@ final class TracyGitVersionPanelExtensionTest extends TestCase
 		return ContainerHelper::create(array_merge(
 			[
 			'extensions' => [
-				'68publishers.tracy_git_version_panel' => new Statement(TracyGitVersionPanelExtension::class),
+				'68publishers.tracy_git_version' => new Statement(TracyGitVersionExtension::class),
 			],
 			'application' => [
 				'scanDirs' => FALSE,
@@ -82,4 +82,4 @@ final class TracyGitVersionPanelExtensionTest extends TestCase
 	}
 }
 
-(new TracyGitVersionPanelExtensionTest())->run();
+(new TracyGitVersionExtensionTest())->run();

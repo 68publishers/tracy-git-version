@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Symfony\Console\Command;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Command;
 
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
@@ -10,9 +10,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\LocalDirectoryExporter;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Export\LocalDirectoryExporter;
+use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
 
 final class ExportRepositoryCommand extends Command
 {
@@ -32,7 +32,7 @@ final class ExportRepositoryCommand extends Command
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
@@ -72,8 +72,8 @@ final class ExportRepositoryCommand extends Command
 	/**
 	 * @param string|NULL $configFile
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Export\Config
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException
+	 * @return \SixtyEightPublishers\TracyGitVersion\Export\Config
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException
 	 */
 	private function getConfig(?string $configFile): Config
 	{
@@ -83,8 +83,8 @@ final class ExportRepositoryCommand extends Command
 	/**
 	 * @param string $configFile
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Export\Config
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException
+	 * @return \SixtyEightPublishers\TracyGitVersion\Export\Config
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException
 	 */
 	private function loadConfig(string $configFile): Config
 	{

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Tests\Cases\Bridge\Symfony\Console\Command;
+namespace SixtyEightPublishers\TracyGitVersion\Tests\Cases\Bridge\Symfony\Console\Command;
 
 use Tester\Assert;
 use Tester\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Console\Output\OutputInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\ExportConfigException;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Symfony\Console\Application;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Symfony\Console\Command\ExportRepositoryCommand;
+use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Application;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Command\ExportRepositoryCommand;
 
 require __DIR__ . '/../../../../../bootstrap.php';
 

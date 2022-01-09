@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Nette\DI;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI;
 
 use RuntimeException;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Definitions\Statement;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetHeadCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetHeadCommandHandler;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetHeadCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
 
-final class TracyGitVersionPanelExportExtension extends CompilerExtension
+final class TracyGitVersionExportExtension extends CompilerExtension
 {
 	/**
 	 * {@inheritDoc}
@@ -47,11 +47,11 @@ final class TracyGitVersionPanelExportExtension extends CompilerExtension
 	 */
 	public function loadConfiguration(): void
 	{
-		if (0 >= count($this->compiler->getExtensions(TracyGitVersionPanelExtension::class))) {
+		if (0 >= count($this->compiler->getExtensions(TracyGitVersionExtension::class))) {
 			throw new RuntimeException(sprintf(
 				'The extension %s can be used only with %s.',
 				static::class,
-				TracyGitVersionPanelExtension::class
+				TracyGitVersionExtension::class
 			));
 		}
 
@@ -65,6 +65,6 @@ final class TracyGitVersionPanelExportExtension extends CompilerExtension
 				'handlers' => $this->config->command_handlers,
 				'source' => $this->config->source_name,
 			])
-			->addTag(TracyGitVersionPanelExtension::TAG_GIT_REPOSITORY, 50);
+			->addTag(TracyGitVersionExtension::TAG_GIT_REPOSITORY, 50);
 	}
 }

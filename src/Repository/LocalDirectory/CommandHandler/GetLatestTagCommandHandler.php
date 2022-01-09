@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\CommitHash;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
 
 final class GetLatestTagCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\Command\GetLatestTagCommand $getLatestTag
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand $getLatestTag
 	 *
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\Entity\Tag|NULL
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag|NULL
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	public function __invoke(GetLatestTagCommand $getLatestTag): ?Tag
 	{

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
+use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
 
 final class GitDirectory
 {
@@ -32,7 +32,7 @@ final class GitDirectory
 	 * @param string $gitDirectory
 	 *
 	 * @return static
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	public static function createFromGitDirectory(string $gitDirectory): self
 	{
@@ -58,7 +58,7 @@ final class GitDirectory
 
 	/**
 	 * @return string
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	public function __toString(): string
 	{
@@ -88,7 +88,7 @@ final class GitDirectory
 
 	/**
 	 * @return string
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	private function getWorkingDirectoryPath(): string
 	{

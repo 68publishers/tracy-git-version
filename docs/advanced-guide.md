@@ -8,7 +8,7 @@
 
 ## Git repository service and extending
 
-All information from Git is provided through a service of type `SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface`.
+All information from Git is provided through a service of type `SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface`.
 If you are using the Nette integration the service is accessible in the application's DI Container.
 
 Following repository implementations are implemented:
@@ -29,7 +29,7 @@ The package comes with the following commands
 
 ### Custom commands and handlers
 
-Commands must implements an interface `SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface` and handlers must implements an interface `SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandHandlerInterface`.
+Commands must implements an interface `SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface` and handlers must implements an interface `SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface`.
 
 Also, there are these two interfaces for handlers:
 
@@ -41,9 +41,9 @@ Let's show an example. Suppose we want to create a command to find out the git h
 ```php
 <?php
 
-namespace App\GitRepositoryPanel\Command;
+namespace App\TracyGitVersion\Command;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
 
 final class ListHistoryCommand implements GitCommandInterface
 {
@@ -71,10 +71,10 @@ Now we need a handler for the command that will read history from the git direct
 ```php
 <?php
 
-namespace App\GitRepositoryPanel\LocalDirectory;
+namespace App\TracyGitVersion\LocalDirectory;
 
-use App\GitRepositoryPanel\Command\ListHistoryCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler\AbstractLocalDirectoryCommandHandler;
+use App\TracyGitVersion\Command\ListHistoryCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\AbstractLocalDirectoryCommandHandler;
 
 final class ListHistoryCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
@@ -97,10 +97,10 @@ final class ListHistoryCommandHandler extends AbstractLocalDirectoryCommandHandl
 ```php
 <?php
 
-namespace App\GitRepositoryPanel\Export;
+namespace App\TracyGitVersion\Export;
 
-use App\GitRepositoryPanel\Command\ListHistoryCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\Export\CommandHandler\AbstractExportedCommandHandler;
+use App\TracyGitVersion\Command\ListHistoryCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\AbstractExportedCommandHandler;
 
 final class ListHistoryCommandHandler extends AbstractExportedCommandHandler
 {
@@ -126,11 +126,11 @@ If you are using standalone Tracy you must register custom handlers for commands
 ```php
 <?php
 
-use App\GitRepositoryPanel\Export;
-use App\GitRepositoryPanel\LocalDirectory;
-use App\GitRepositoryPanel\Command\ListHistoryCommand;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\ExportedGitRepository;
+use App\TracyGitVersion\Export;
+use App\TracyGitVersion\LocalDirectory;
+use App\TracyGitVersion\Command\ListHistoryCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository;
 
 # create a repository that reads from the .git directory:
 $localGitRepository = LocalGitRepository::createDefault();
@@ -146,19 +146,19 @@ $exportedGitRepository->addHandler(ListHistoryCommand::class, new Export\ListHis
 When you are using Nette integration then you should register the handlers in the configuration:
 
 ```neon
-68publishers.tracy_git_version_panel:
+68publishers.tracy_git_version:
     command_handlers:
-        App\GitRepositoryPanel\Command\ListHistoryCommand: App\GitRepositoryPanel\LocalDirectory\ListHistoryCommandHandler
+        App\TracyGitVersion\Command\ListHistoryCommand: App\TracyGitVersion\LocalDirectory\ListHistoryCommandHandler
 
-68publishers.tracy_git_version_panel.export:
+68publishers.tracy_git_version.export:
     command_handlers:
-        App\GitRepositoryPanel\Command\ListHistoryCommand: App\GitRepositoryPanel\Export\ListHistoryCommandHandler
+        App\TracyGitVersion\Command\ListHistoryCommand: App\TracyGitVersion\Export\ListHistoryCommandHandler
 ```
 
 ## Extending the panel
 
 By default, the panel contains the most useful information like the current branch, commit hash, and latest tag. But you are able to add any information you want.
-The whole panel is made up of blocks which are classes that implement an interface `SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface`.
+The whole panel is made up of blocks which are classes that implement an interface `SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface`.
 
 ### Extending with a simple table
 
@@ -167,8 +167,8 @@ If you want to add some additional data that are not provided from Git you can u
 ```php
 <?php
 
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\GitVersionPanel;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\SimpleTableBlock;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\SimpleTableBlock;
 
 $panel = GitVersionPanel::createDefault()
     ->addBlock(new SimpleTableBlock([
@@ -179,10 +179,10 @@ $panel = GitVersionPanel::createDefault()
 Respectively
 
 ```neon
-68publishers.tracy_git_version_panel:
+68publishers.tracy_git_version:
     panel:
         blocks:
-            - SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\SimpleTableBlock([
+            - SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\SimpleTableBlock([
                 Version: %build_version%
             ], Build)
 ```
@@ -198,9 +198,9 @@ If you have declared some [custom commands](#custom-commands-and-handlers) and y
 ```php
 <?php
 
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Helpers;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Helpers;
 
 final class HistoryBlock implements BlockInterface
 {
@@ -226,12 +226,12 @@ If you are using the `ExportedGitRepository` and you have custom [repository com
 ```php
 <?php
 
-namespace App\GitRepositoryPanel\Exporter;
+namespace App\TracyGitVersion\Exporter;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Export\ExporterInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\BadMethodCallException;
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface;
+use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 
 class HistoryExporter implements ExporterInterface
 {
@@ -259,11 +259,11 @@ The configuration file might look something like this:
 ```php
 <?php
 
-use App\GitRepositoryPanel\Exporter\HistoryExporter;
-use App\GitRepositoryPanel\Command\ListHistoryCommand;
-use App\GitRepositoryPanel\LocalDirectory\ListHistoryCommandHandler;
+use App\TracyGitVersion\Exporter\HistoryExporter;
+use App\TracyGitVersion\Command\ListHistoryCommand;
+use App\TracyGitVersion\LocalDirectory\ListHistoryCommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Export\Config;
 
 return Config::createDefault()
     ->setOutputFile(__DIR__ . '/temp/git-version/repository.json') # you can define the filename here so the option `--output-file` can be omitted
@@ -278,7 +278,7 @@ return Config::createDefault()
 Now execute the following command that regenerates the export file:
 
 ```bash
-$ vendor/bin/tracy-git-version-panel export-repository --config git-version-config.php -vv
+$ vendor/bin/tracy-git-version export-repository --config git-version-config.php -vv
 ```
 
 As you can see the option `--output-file` is not needed because we already defined the filename in the config.

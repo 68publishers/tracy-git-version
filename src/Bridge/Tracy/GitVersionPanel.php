@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy;
+namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy;
 
 use Tracy\IBarPanel;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalGitRepository;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface;
-use SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\CurrentStateBlock;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\RuntimeCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\CurrentStateBlock;
+use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
 
 final class GitVersionPanel implements IBarPanel
 {
 	private GitRepositoryInterface $gitRepository;
 
-	/** @var \SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface[]  */
+	/** @var \SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface[]  */
 	private array $blocks;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitRepositoryInterface   $gitRepository
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface[] $blocks
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface   $gitRepository
+	 * @param \SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface[] $blocks
 	 */
 	public function __construct(GitRepositoryInterface $gitRepository, array $blocks)
 	{
@@ -49,7 +49,7 @@ final class GitVersionPanel implements IBarPanel
 	}
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Bridge\Tracy\Block\BlockInterface $block
+	 * @param \SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface $block
 	 *
 	 * @return $this
 	 */

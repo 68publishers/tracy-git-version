@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\Command;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\Command;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
 
 final class GetLatestTagCommand implements GitCommandInterface
 {

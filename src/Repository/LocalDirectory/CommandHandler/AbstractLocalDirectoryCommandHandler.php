@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\CommandHandler;
+namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler;
 
-use SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 
 abstract class AbstractLocalDirectoryCommandHandler implements LocalDirectoryGitCommandHandlerInterface
 {
 	private ?GitDirectory $gitDirectory;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory|NULL $gitDirectory
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory|NULL $gitDirectory
 	 */
 	public function __construct(?GitDirectory $gitDirectory = NULL)
 	{
@@ -28,8 +28,8 @@ abstract class AbstractLocalDirectoryCommandHandler implements LocalDirectoryGit
 	}
 
 	/**
-	 * @return \SixtyEightPublishers\TracyGitVersionPanel\Repository\LocalDirectory\GitDirectory
-	 * @throws \SixtyEightPublishers\TracyGitVersionPanel\Exception\GitDirectoryException
+	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory
+	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	protected function getGitDirectory(): GitDirectory
 	{

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SixtyEightPublishers\TracyGitVersionPanel\Exception;
+namespace SixtyEightPublishers\TracyGitVersion\Exception;
 
 use Exception;
-use SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
 
 final class UnhandledCommandException extends Exception implements ExceptionInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersionPanel\Repository\GitCommandInterface $command
+	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface $command
 	 *
 	 * @return static
 	 */
