@@ -251,7 +251,7 @@ class HistoryExporter implements ExporterInterface
 }
 ```
 
-If you need a more realistic example please look into some [existing exporter](../src/Export).
+If you need a more realistic example please look into some [existing exporter](../src/Export/PartialExporter).
 
 The configuration file might look something like this:
 
