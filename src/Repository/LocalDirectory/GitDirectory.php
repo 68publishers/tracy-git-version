@@ -12,7 +12,7 @@ final class GitDirectory
 
 	private ?string $workingDirectoryPath = NULL;
 
-	private ?string $gitDirectory = NULL;
+	private ?string $gitDirectory;
 
 	private string $directoryName;
 
@@ -68,7 +68,7 @@ final class GitDirectory
 
 		$workingDirectory = $this->getWorkingDirectoryPath();
 
-		while (FALSE !== $workingDirectory) {
+		do {
 			$currentDirectory = $workingDirectory;
 			$gitDirectory = $workingDirectory . DIRECTORY_SEPARATOR . $this->directoryName;
 
@@ -76,14 +76,10 @@ final class GitDirectory
 				return $this->gitDirectory = $gitDirectory;
 			}
 
-			$workingDirectory = dirname($workingDirectory) . '';
+			$workingDirectory = dirname($workingDirectory);
+		} while ($workingDirectory !== $currentDirectory);
 
-			if ($workingDirectory === $currentDirectory) {
-				break;
-			}
-		}
-
-		throw GitDirectoryException::gitDirectoryNotFound($this->workingDirectory);
+		throw GitDirectoryException::gitDirectoryNotFound($workingDirectory);
 	}
 
 	/**
