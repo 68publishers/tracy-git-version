@@ -28,6 +28,10 @@ final class GetLatestTagCommandHandler extends AbstractLocalDirectoryCommandHand
 		$latestTimestamp = 0;
 
 		foreach (scandir($tagsDirectory) as $tagName) {
+			if (in_array($tagName, ['.', '..'], TRUE)) {
+				continue;
+			}
+
 			$filename = $tagsDirectory . DIRECTORY_SEPARATOR . $tagName;
 
 			if (!is_readable($filename)) {
