@@ -53,4 +53,4 @@ final class LatestTagExporterTest extends TestCase
 	}
 }
 
-(new HeadExporterTest())->run();
+(new LatestTagExporterTest())->run();
