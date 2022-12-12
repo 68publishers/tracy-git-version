@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-$possibleAutoloadFiles = [__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__ . '/vendor/autoload.php'];
-$autoloadFile = NULL;
+$possibleAutoloadFiles = [__DIR__ . '/../../autoload.php', __DIR__ . '/../autoload.php', __DIR__ . '/vendor/autoload.php'];
+$autoloadFile = null;
 
 foreach ($possibleAutoloadFiles as $possibleAutoloadFile) {
 	if (file_exists($possibleAutoloadFile)) {
@@ -12,11 +12,10 @@ foreach ($possibleAutoloadFiles as $possibleAutoloadFile) {
 	}
 }
 
-if (NULL === $autoloadFile) {
+if (null === $autoloadFile) {
 	throw new RuntimeException('Unable to find composer autoload.php file.');
 }
 
-/** @noinspection PhpIncludeInspection */
 require_once $autoloadFile;
 
 unset($possibleAutoloadFiles, $possibleAutoloadFile, $autoloadFile);
