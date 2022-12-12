@@ -1,0 +1,53 @@
+name: Coding style
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  php-cs-fixer:
+    name: Php-Cs-Fixer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer update --no-progress --prefer-dist --prefer-stable --optimize-autoloader --quiet
+
+      - name: Php-Cs-Fixer
+        run: vendor/bin/php-cs-fixer fix -v --dry-run
+
+  php-stan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer update --no-progress --prefer-dist --prefer-stable --optimize-autoloader --quiet
+
+      - name: Php-Cs-Fixer
+        run: vendor/bin/php-cs-fixer fix -v --dry-run
+
+      - name: PhpStan
+        run: vendor/bin/phpstan analyse --level 7 src
