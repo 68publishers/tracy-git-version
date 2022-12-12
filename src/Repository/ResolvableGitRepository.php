@@ -6,82 +6,65 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
 use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
 use SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException;
+use function get_class;
 
 final class ResolvableGitRepository implements GitRepositoryInterface
 {
-	/** @var \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface[]  */
+	/** @var array<GitRepositoryInterface>  */
 	private array $repositories;
 
-	private bool $resolved = FALSE;
+	private bool $resolved = false;
 
-	private ?GitRepositoryInterface $resolvedRepository = NULL;
+	private ?GitRepositoryInterface $resolvedRepository = null;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface[] $repositories
+	 * @param array<GitRepositoryInterface> $repositories
 	 */
 	public function __construct(array $repositories)
 	{
 		$this->repositories = (static fn (GitRepositoryInterface ...$repositories): array => $repositories)(...$repositories);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function getSource(): string
 	{
 		$repository = $this->getResolvedRepository();
 
-		return NULL !== $repository ? $repository->getSource() : 'unresolved';
+		return null !== $repository ? $repository->getSource() : 'unresolved';
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function isAccessible(): bool
 	{
 		$repository = $this->getResolvedRepository();
 
-		return NULL !== $repository ? $repository->isAccessible() : FALSE;
+		return null !== $repository ? $repository->isAccessible() : false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void
 	{
 		throw BadMethodCallException::cantAddHandlerToResolvableGitRepository($commandClassname, get_class($handler));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function handle(GitCommandInterface $command)
 	{
 		$repository = $this->getResolvedRepository();
 
-		if (NULL === $repository) {
+		if (null === $repository) {
 			throw UnhandledCommandException::cantHandleCommand($command);
 		}
 
 		return $repository->handle($command);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function supports(string $commandClassname): bool
 	{
 		$repository = $this->getResolvedRepository();
 
-		return NULL !== $repository ? $repository->supports($commandClassname) : FALSE;
+		return null !== $repository && $repository->supports($commandClassname);
 	}
 
-	/**
-	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface|NULL
-	 */
 	private function getResolvedRepository(): ?GitRepositoryInterface
 	{
-		if (FALSE === $this->resolved) {
+		if (false === $this->resolved) {
 			foreach ($this->repositories as $repository) {
 				if ($repository->isAccessible()) {
 					$this->resolvedRepository = $repository;
@@ -90,7 +73,7 @@ final class ResolvableGitRepository implements GitRepositoryInterface
 				}
 			}
 
-			$this->resolved = TRUE;
+			$this->resolved = true;
 		}
 
 		return $this->resolvedRepository;

@@ -9,10 +9,7 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 interface ExporterInterface
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Export\Config                          $config
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface|null $gitRepository
-	 *
-	 * @return array
+	 * @return array<mixed, mixed>
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException
 	 */
 	public function export(Config $config, ?GitRepositoryInterface $gitRepository): array;

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy;
 
 use Tracy\Helpers;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface;
 
-/** @var \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface $gitRepository */
-/** @var \SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface[] $blocks */
+/** @var GitRepositoryInterface $gitRepository */
+/** @var array<BlockInterface> $blocks */
 
 ?>
 

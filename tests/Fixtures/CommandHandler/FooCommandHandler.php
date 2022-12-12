@@ -11,11 +11,6 @@ final class FooCommandHandler implements GitCommandHandlerInterface
 {
 	public int $callingCounter = 0;
 
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand $command
-	 *
-	 * @return string
-	 */
 	public function __invoke(FooCommand $command): string
 	{
 		$this->callingCounter++;

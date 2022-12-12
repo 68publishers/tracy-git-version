@@ -20,9 +20,6 @@ final class Application extends BaseApplication
 		$this->add(new ExportRepositoryCommand());
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
 	protected function getDefaultCommands(): array
 	{
 		return [new HelpCommand(), new ListCommand()];

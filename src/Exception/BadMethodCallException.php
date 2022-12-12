@@ -6,14 +6,11 @@ namespace SixtyEightPublishers\TracyGitVersion\Exception;
 
 use SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
+use function sprintf;
+use function get_class;
 
 final class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface
 {
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface $exporter
-	 *
-	 * @return static
-	 */
 	public static function gitRepositoryNotProvidedForPartialExporter(ExporterInterface $exporter): self
 	{
 		return new self(sprintf(
@@ -23,10 +20,8 @@ final class BadMethodCallException extends \BadMethodCallException implements Ex
 	}
 
 	/**
-	 * @param string $commandClassname
-	 * @param string $handlerClassname
-	 *
-	 * @return static
+	 * @param class-string $commandClassname
+	 * @param class-string $handlerClassname
 	 */
 	public static function cantAddHandlerToResolvableGitRepository(string $commandClassname, string $handlerClassname): self
 	{

@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
+use Tester\Environment;
+
 if (@!include __DIR__ . '/../vendor/autoload.php') {
-	echo 'Please run `composer install`';
+	echo 'Install Nette Tester using `composer install`';
 	exit(1);
 }
 
-Tester\Environment::setup();
+Environment::setup();
+Environment::bypassFinals();
+date_default_timezone_set('Europe/Prague');
 
-if (!defined('TEMP_PATH')) {
-	define('TEMP_PATH', __DIR__ . '/temp');
+if (PHP_VERSION_ID >= 80200) {
+	error_reporting(~E_DEPRECATED);
 }

@@ -9,36 +9,23 @@ interface GitRepositoryInterface
 	public const SOURCE_GIT_DIRECTORY = 'git directory';
 	public const SOURCE_EXPORT = 'export';
 
-	/**
-	 * @return string
-	 */
 	public function getSource(): string;
 
-	/**
-	 * @return bool
-	 */
 	public function isAccessible(): bool;
 
 	/**
-	 * @param string                                                                      $commandClassname
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface $handler
-	 *
-	 * @return void
+	 * @param class-string $commandClassname
 	 */
 	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface $command
-	 *
 	 * @return mixed
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException
 	 */
 	public function handle(GitCommandInterface $command);
 
 	/**
-	 * @param string $commandClassname
-	 *
-	 * @return bool
+	 * @param class-string $commandClassname
 	 */
 	public function supports(string $commandClassname): bool;
 }

@@ -1,0 +1,5 @@
+extensions:
+	tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
+
+application:
+	scanDirs: no

@@ -12,11 +12,6 @@ final class LocalDirectoryFooCommandHandler extends AbstractLocalDirectoryComman
 {
 	public int $callingCounter = 0;
 
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand $command
-	 *
-	 * @return string
-	 */
 	public function __invoke(FooCommand $command): string
 	{
 		$this->callingCounter++;
@@ -24,9 +19,6 @@ final class LocalDirectoryFooCommandHandler extends AbstractLocalDirectoryComman
 		return $this->getGitDirectoryPath() . '/foo';
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function getGitDirectoryPath(): string
 	{
 		try {

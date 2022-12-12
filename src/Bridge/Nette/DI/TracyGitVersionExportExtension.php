@@ -15,55 +15,55 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
+use function count;
+use function assert;
+use function sprintf;
+use function array_map;
 
 final class TracyGitVersionExportExtension extends CompilerExtension
 {
-	/**
-	 * {@inheritDoc}
-	 */
 	public function getConfigSchema(): Schema
 	{
-		$tempDir = $this->getContainerBuilder()->parameters['tempDir'] ?? NULL;
+		$tempDir = $this->getContainerBuilder()->parameters['tempDir'] ?? null;
 
 		return Expect::structure([
 			'source_name' => Expect::string(GitRepositoryInterface::SOURCE_EXPORT),
-			'export_filename' => Expect::string($tempDir ? $tempDir . '/git-version/repository.json' : NULL)->required(NULL === $tempDir),
+			'export_filename' => Expect::string($tempDir ? $tempDir . '/git-version/repository.json' : null)->required(null === $tempDir),
 			'command_handlers' => Expect::arrayOf(Expect::anyOf(Expect::type(Statement::class), Expect::string()), 'string')
 				->default([
 					GetHeadCommand::class => new Statement(GetHeadCommandHandler::class),
 					GetLatestTagCommand::class => new Statement(GetLatestTagCommandHandler::class),
 				])
-				->mergeDefaults(TRUE)
+				->mergeDefaults()
 				->before(static function (array $items) {
 					return array_map(static function ($item) {
 						return $item instanceof Statement ? $item : new Statement($item);
 					}, $items);
 				}),
-		]);
+		])->castTo(TracyGitVersionExportConfig::class);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function loadConfiguration(): void
 	{
 		if (0 >= count($this->compiler->getExtensions(TracyGitVersionExtension::class))) {
 			throw new RuntimeException(sprintf(
 				'The extension %s can be used only with %s.',
-				static::class,
+				self::class,
 				TracyGitVersionExtension::class
 			));
 		}
 
 		$builder = $this->getContainerBuilder();
+		$config = $this->getConfig();
+		assert($config instanceof TracyGitVersionExportConfig);
 
 		# exported git repository
 		$builder->addDefinition($this->prefix('git_repository.exported'))
-			->setAutowired(FALSE)
+			->setAutowired(false)
 			->setFactory(ExportedGitRepository::class, [
-				'file' => $this->config->export_filename,
-				'handlers' => $this->config->command_handlers,
-				'source' => $this->config->source_name,
+				'file' => $config->export_filename,
+				'handlers' => $config->command_handlers,
+				'source' => $config->source_name,
 			])
 			->addTag(TracyGitVersionExtension::TAG_GIT_REPOSITORY, 50);
 	}

@@ -14,13 +14,11 @@ use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
 final class LatestTagExporter implements ExporterInterface
 {
 	/**
-	 * {@inheritDoc}
-	 *
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException
 	 */
 	public function export(Config $config, ?GitRepositoryInterface $gitRepository): array
 	{
-		if (NULL === $gitRepository) {
+		if (null === $gitRepository) {
 			throw BadMethodCallException::gitRepositoryNotProvidedForPartialExporter($this);
 		}
 

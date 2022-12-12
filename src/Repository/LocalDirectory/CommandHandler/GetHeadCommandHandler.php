@@ -7,13 +7,17 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\Command
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head;
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
+use function trim;
+use function strlen;
+use function strpos;
+use function substr;
+use function explode;
+use function is_readable;
+use function file_get_contents;
 
 final class GetHeadCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand $command
-	 *
-	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	public function __invoke(GetHeadCommand $command): Head
@@ -21,21 +25,21 @@ final class GetHeadCommandHandler extends AbstractLocalDirectoryCommandHandler
 		$headFile = $this->getGitDirectory() . DIRECTORY_SEPARATOR . 'HEAD';
 
 		# not versioned
-		if (!is_readable($headFile) || FALSE === ($content = @file_get_contents($headFile))) {
-			return new Head(NULL, NULL);
+		if (!is_readable($headFile) || false === ($content = @file_get_contents($headFile))) {
+			return new Head(null, null);
 		}
 
 		# detached head
 		if (0 !== strpos($content, 'ref:')) {
-			return new Head(NULL, new CommitHash(trim($content)));
+			return new Head(null, new CommitHash(trim($content)));
 		}
 
 		$branchParts = explode('/', $content, 3);
 		$commitFile = $this->getGitDirectory() . DIRECTORY_SEPARATOR . trim(substr($content, 5, strlen($content)));
 
 		return new Head(
-			isset($branchParts[2]) ? trim($branchParts[2]) : NULL,
-			is_readable($commitFile) && FALSE !== ($commitHash = @file_get_contents($commitFile)) ? new CommitHash(trim($commitHash)) : NULL
+			isset($branchParts[2]) ? trim($branchParts[2]) : null,
+			is_readable($commitFile) && false !== ($commitHash = @file_get_contents($commitFile)) ? new CommitHash(trim($commitHash)) : null
 		);
 	}
 }

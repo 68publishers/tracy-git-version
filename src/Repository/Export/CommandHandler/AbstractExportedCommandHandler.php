@@ -6,26 +6,27 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler;
 
 abstract class AbstractExportedCommandHandler implements ExportedGitCommandHandlerInterface
 {
+	/** @var array<mixed, mixed>|null */
 	private ?array $exportedValue;
 
 	/**
-	 * @param array|NULL $exportedValue
+	 * @param array<mixed, mixed>|null $exportedValue
 	 */
-	public function __construct(?array $exportedValue = NULL)
+	public function __construct(?array $exportedValue = null)
 	{
 		$this->exportedValue = $exportedValue;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function withExportedValue(array $exportedValue): ExportedGitCommandHandlerInterface
 	{
-		return new static($exportedValue);
+		$handler = clone $this;
+		$handler->exportedValue = $exportedValue;
+
+		return $handler;
 	}
 
 	/**
-	 * @return array
+	 * @return array<mixed, mixed>
 	 */
 	protected function getExportedValue(): array
 	{

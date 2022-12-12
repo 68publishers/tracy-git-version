@@ -9,9 +9,7 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface;
 interface ExportedGitCommandHandlerInterface extends GitCommandHandlerInterface
 {
 	/**
-	 * @param array $exportedValue
-	 *
-	 * @return $this
+	 * @param array<mixed, mixed> $exportedValue
 	 */
 	public function withExportedValue(array $exportedValue): self;
 }

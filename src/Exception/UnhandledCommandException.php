@@ -6,14 +6,10 @@ namespace SixtyEightPublishers\TracyGitVersion\Exception;
 
 use Exception;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
+use function sprintf;
 
 final class UnhandledCommandException extends Exception implements ExceptionInterface
 {
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface $command
-	 *
-	 * @return static
-	 */
 	public static function cantHandleCommand(GitCommandInterface $command): self
 	{
 		return new self(sprintf(

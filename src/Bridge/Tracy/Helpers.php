@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy;
 
 use Throwable;
+use function extract;
+use function ob_start;
+use function ob_end_clean;
+use function ob_get_clean;
 
 final class Helpers
 {
@@ -13,11 +17,9 @@ final class Helpers
 	}
 
 	/**
-	 * @param string $templatePath
-	 * @param array  $params
+	 * @param array<string, mixed> $params
 	 *
-	 * @return string
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
 	public static function renderTemplate(string $templatePath, array $params = []): string
 	{
@@ -27,10 +29,9 @@ final class Helpers
 		try {
 			extract($params, EXTR_OVERWRITE);
 
-			/** @noinspection PhpIncludeInspection */
 			require $templatePath;
 
-			return ob_get_clean();
+			return (string) ob_get_clean();
 		} catch (Throwable $e) {
 			ob_end_clean();
 

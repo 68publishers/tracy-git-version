@@ -9,10 +9,5 @@ use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 
 interface LocalDirectoryGitCommandHandlerInterface extends GitCommandHandlerInterface
 {
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory $gitDirectory
-	 *
-	 * @return $this
-	 */
 	public function withGitDirectory(GitDirectory $gitDirectory): self;
 }

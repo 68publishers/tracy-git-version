@@ -12,11 +12,6 @@ final class SimpleGitRepository extends AbstractGitRepository
 
 	private bool $accessible;
 
-	/**
-	 * @param string $source
-	 * @param bool   $accessible
-	 * @param array  $handlers
-	 */
 	public function __construct(string $source, bool $accessible, array $handlers = [])
 	{
 		parent::__construct($handlers);
@@ -25,17 +20,11 @@ final class SimpleGitRepository extends AbstractGitRepository
 		$this->accessible = $accessible;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function getSource(): string
 	{
 		return $this->source;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function isAccessible(): bool
 	{
 		return $this->accessible;
