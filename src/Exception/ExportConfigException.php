@@ -6,14 +6,10 @@ namespace SixtyEightPublishers\TracyGitVersion\Exception;
 
 use Exception;
 use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use function sprintf;
 
 final class ExportConfigException extends Exception implements ExceptionInterface
 {
-	/**
-	 * @param string $name
-	 *
-	 * @return static
-	 */
 	public static function missingOption(string $name): self
 	{
 		return new self(sprintf(
@@ -22,11 +18,6 @@ final class ExportConfigException extends Exception implements ExceptionInterfac
 		));
 	}
 
-	/**
-	 * @param string $filename
-	 *
-	 * @return static
-	 */
 	public static function configFileNotFound(string $filename): self
 	{
 		return new self(sprintf(
@@ -35,11 +26,6 @@ final class ExportConfigException extends Exception implements ExceptionInterfac
 		));
 	}
 
-	/**
-	 * @param string $filename
-	 *
-	 * @return static
-	 */
 	public static function configCantBeLoadedFromFile(string $filename): self
 	{
 		return new self(sprintf(

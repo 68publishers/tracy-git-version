@@ -19,9 +19,7 @@ final class LocalGitRepository extends AbstractGitRepository
 	private string $source;
 
 	/**
-	 * @param string                                                                       $source
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory $gitDirectory
-	 * @param array                                                                        $handlers
+	 * @param array<class-string, GitCommandHandlerInterface> $handlers
 	 */
 	public function __construct(GitDirectory $gitDirectory, array $handlers = [], string $source = self::SOURCE_GIT_DIRECTORY)
 	{
@@ -31,13 +29,7 @@ final class LocalGitRepository extends AbstractGitRepository
 		parent::__construct($handlers);
 	}
 
-	/**
-	 * @param string|NULL $workingDirectory
-	 * @param string      $directoryName
-	 *
-	 * @return static
-	 */
-	public static function createDefault(?string $workingDirectory = NULL, string $directoryName = '.git'): self
+	public static function createDefault(?string $workingDirectory = null, string $directoryName = '.git'): self
 	{
 		return new self(
 			GitDirectory::createAutoDetected($workingDirectory, $directoryName),
@@ -48,31 +40,22 @@ final class LocalGitRepository extends AbstractGitRepository
 		);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function getSource(): string
 	{
 		return $this->source;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function isAccessible(): bool
 	{
 		try {
 			$this->gitDirectory->__toString();
 
-			return TRUE;
+			return true;
 		} catch (GitDirectoryException $e) {
-			return FALSE;
+			return false;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void
 	{
 		if ($handler instanceof LocalDirectoryGitCommandHandlerInterface) {

@@ -6,6 +6,15 @@ Simple and extensible panel for [Tracy](https://github.com/nette/tracy) that sho
 <img src="docs/images/tracy-panel-header.png" alt="Tracy Git version panel" align="center" width="500">
 </div>
 
+<br>
+<p align="center">
+<a href="https://github.com/68publishers/tracy-git-version/actions"><img alt="Checks" src="https://badgen.net/github/checks/68publishers/tracy-git-version/main"></a>
+<a href="https://coveralls.io/github/68publishers/tracy-git-version?branch=main"><img alt="Coverage Status" src="https://coveralls.io/repos/github/68publishers/tracy-git-version/badge.svg?branch=main"></a>
+<a href="https://packagist.org/packages/68publishers/tracy-git-version"><img alt="Total Downloads" src="https://badgen.net/packagist/dt/68publishers/tracy-git-version"></a>
+<a href="https://packagist.org/packages/68publishers/tracy-git-version"><img alt="Latest Version" src="https://badgen.net/packagist/v/68publishers/tracy-git-version"></a>
+<a href="https://packagist.org/packages/68publishers/tracy-git-version"><img alt="PHP Version" src="https://badgen.net/packagist/php/68publishers/tracy-git-version"></a>
+</p>
+
 ## Table of contents
 
 * [Installation](#installation)
@@ -30,8 +39,6 @@ $ composer require 68publishers/tracy-git-version
 The simplest way how to register the panel into Tracy is by creating a default instance and providing it directly into a Bar.
 
 ```php
-<?php
-
 use Tracy\Debugger;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
 
@@ -44,7 +51,7 @@ Basic integration into Nette is really simple. Just register an extension.
 
 ```neon
 extensions:
-	68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
+    68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
 ```
 
 And everything works 😉
@@ -59,8 +66,6 @@ However, at this moment we have no source of information about the current versi
 You must create repositories and the panel manually but there is not much work to do.
 
 ```php
-<?php
-
 use Tracy\Debugger;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
@@ -91,8 +96,8 @@ The setup for Nette is more simple. Just add another extension into your neon co
 
 ```neon
 extensions:
-	68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
-	68publishers.tracy_git_version.export: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExportExtension
+    68publishers.tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
+    68publishers.tracy_git_version.export: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExportExtension
 ```
 
 The default name for the exported file is `%tempDir%/git-version/repository.json` but you can change it.
@@ -117,16 +122,14 @@ If you want to read more about repositories, how to extend them or how to add cu
 
 ## Contributing
 
-Before committing any changes, don't forget to run
+Before opening a pull request, please check your changes using the following commands
 
 ```bash
-$ composer run php-cs-fixer
-```
+$ make init # to pull and start all docker images
 
-and
-
-```bash
-$ composer run tests
+$ make cs.check
+$ make stan
+$ make tests.all
 ```
 
 ## License

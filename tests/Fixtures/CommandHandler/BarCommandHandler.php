@@ -11,11 +11,6 @@ final class BarCommandHandler implements GitCommandHandlerInterface
 {
 	public int $callingCounter = 0;
 
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\BarCommand $command
-	 *
-	 * @return int
-	 */
 	public function __invoke(BarCommand $command): int
 	{
 		$this->callingCounter++;

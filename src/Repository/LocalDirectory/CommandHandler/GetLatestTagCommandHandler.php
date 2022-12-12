@@ -7,13 +7,21 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\Command
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag;
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use function key;
+use function trim;
+use function krsort;
+use function current;
+use function scandir;
+use function sprintf;
+use function in_array;
+use function filectime;
+use function file_exists;
+use function is_readable;
+use function file_get_contents;
 
 final class GetLatestTagCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand $getLatestTag
-	 *
-	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag|NULL
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	public function __invoke(GetLatestTagCommand $getLatestTag): ?Tag
@@ -21,14 +29,15 @@ final class GetLatestTagCommandHandler extends AbstractLocalDirectoryCommandHand
 		$tagsDirectory = sprintf('%s%srefs%stags', $this->getGitDirectory(), DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
 
 		if (!file_exists($tagsDirectory)) {
-			return NULL;
+			return null;
 		}
 
 		$latestTagNames = [];
 		$latestTimestamp = 0;
+		$tagNames = scandir($tagsDirectory);
 
-		foreach (scandir($tagsDirectory) as $tagName) {
-			if (in_array($tagName, ['.', '..'], TRUE)) {
+		foreach ($tagNames ?: [] as $tagName) {
+			if (in_array($tagName, ['.', '..'], true)) {
 				continue;
 			}
 
@@ -40,18 +49,18 @@ final class GetLatestTagCommandHandler extends AbstractLocalDirectoryCommandHand
 
 			$creationTime = @filectime($filename);
 
-			if (FALSE !== $creationTime && $creationTime >= $latestTimestamp) {
+			if (false !== $creationTime && $creationTime >= $latestTimestamp) {
 				$latestTimestamp = $creationTime;
 				$latestTagNames[$tagName] = $filename;
 			}
 		}
 
 		if (empty($latestTagNames)) {
-			return NULL;
+			return null;
 		}
 
 		krsort($latestTagNames);
 
-		return new Tag(key($latestTagNames), new CommitHash(trim((string) @file_get_contents(current($latestTagNames)))));
+		return new Tag((string) key($latestTagNames), new CommitHash(trim((string) @file_get_contents(current($latestTagNames)))));
 	}
 }

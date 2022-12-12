@@ -5,23 +5,22 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory;
 
 use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
+use function is_dir;
+use function dirname;
+use function realpath;
+use function file_exists;
 
 final class GitDirectory
 {
 	private ?string $workingDirectory;
 
-	private ?string $workingDirectoryPath = NULL;
+	private ?string $workingDirectoryPath = null;
 
 	private ?string $gitDirectory;
 
 	private string $directoryName;
 
-	/**
-	 * @param string|NULL $gitDirectory
-	 * @param string|NULL $workingDirectory
-	 * @param string      $directoryName
-	 */
-	private function __construct(?string $gitDirectory, ?string $workingDirectory = NULL, string $directoryName = '.git')
+	private function __construct(?string $gitDirectory, ?string $workingDirectory = null, string $directoryName = '.git')
 	{
 		$this->workingDirectory = $workingDirectory;
 		$this->gitDirectory = $gitDirectory;
@@ -29,40 +28,30 @@ final class GitDirectory
 	}
 
 	/**
-	 * @param string $gitDirectory
-	 *
-	 * @return static
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	public static function createFromGitDirectory(string $gitDirectory): self
 	{
 		$realGitDirectory = realpath($gitDirectory);
 
-		if (FALSE === $realGitDirectory || !file_exists($realGitDirectory)) {
+		if (false === $realGitDirectory || !file_exists($realGitDirectory)) {
 			throw GitDirectoryException::invalidGitDirectory($gitDirectory);
 		}
 
-		return new self($realGitDirectory, NULL);
+		return new self($realGitDirectory, null);
 	}
 
-	/**
-	 * @param string|NULL $workingDirectory
-	 * @param string      $directoryName
-	 *
-	 * @return static
-	 */
-	public static function createAutoDetected(?string $workingDirectory = NULL, string $directoryName = '.git'): self
+	public static function createAutoDetected(?string $workingDirectory = null, string $directoryName = '.git'): self
 	{
-		return new self(NULL, $workingDirectory, $directoryName);
+		return new self(null, $workingDirectory, $directoryName);
 	}
 
 	/**
-	 * @return string
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	public function __toString(): string
 	{
-		if (NULL !== $this->gitDirectory) {
+		if (null !== $this->gitDirectory) {
 			return $this->gitDirectory;
 		}
 
@@ -83,19 +72,18 @@ final class GitDirectory
 	}
 
 	/**
-	 * @return string
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	private function getWorkingDirectoryPath(): string
 	{
-		if (NULL !== $this->workingDirectoryPath) {
+		if (null !== $this->workingDirectoryPath) {
 			return $this->workingDirectoryPath;
 		}
 
 		$workingDirectory = $this->workingDirectory ?? dirname($_SERVER['SCRIPT_FILENAME']);
 		$workingDirectoryPath = realpath($workingDirectory);
 
-		if (FALSE === $workingDirectoryPath) {
+		if (false === $workingDirectoryPath) {
 			throw GitDirectoryException::invalidWorkingDirectory($workingDirectory);
 		}
 

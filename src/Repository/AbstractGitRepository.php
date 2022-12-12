@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
 use SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException;
+use function assert;
+use function get_class;
+use function is_callable;
 
 abstract class AbstractGitRepository implements GitRepositoryInterface
 {
-	/** @var \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface[] */
+	/** @var array<GitCommandHandlerInterface> */
 	private array $handlers = [];
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface[] $handlers
+	 * @param array<class-string, GitCommandHandlerInterface> $handlers
 	 */
 	public function __construct(array $handlers = [])
 	{
@@ -21,17 +24,11 @@ abstract class AbstractGitRepository implements GitRepositoryInterface
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void
 	{
 		$this->handlers[$commandClassname] = $handler;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function handle(GitCommandInterface $command)
 	{
 		$classname = get_class($command);
@@ -41,13 +38,11 @@ abstract class AbstractGitRepository implements GitRepositoryInterface
 		}
 
 		$handler = $this->handlers[$classname];
+		assert(is_callable($handler));
 
 		return $handler($command);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function supports(string $commandClassname): bool
 	{
 		return isset($this->handlers[$commandClassname]) && $this->isAccessible();

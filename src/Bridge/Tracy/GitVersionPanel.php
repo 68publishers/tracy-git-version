@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersion\Bridge\Tracy;
 
+use Throwable;
 use Tracy\IBarPanel;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\CurrentStateBlock;
+use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
 
 final class GitVersionPanel implements IBarPanel
 {
 	private GitRepositoryInterface $gitRepository;
 
-	/** @var \SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface[]  */
+	/** @var array<BlockInterface> */
 	private array $blocks;
 
 	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface   $gitRepository
-	 * @param \SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface[] $blocks
+	 * @param array<BlockInterface> $blocks
 	 */
 	public function __construct(GitRepositoryInterface $gitRepository, array $blocks)
 	{
@@ -29,13 +30,9 @@ final class GitVersionPanel implements IBarPanel
 	}
 
 	/**
-	 * @param string|NULL $workingDirectory
-	 * @param string      $directoryName
-	 * @param array       $handlers
-	 *
-	 * @return static
+	 * @param array<class-string, GitCommandHandlerInterface> $handlers
 	 */
-	public static function createDefault(?string $workingDirectory = NULL, string $directoryName = '.git', array $handlers = []): self
+	public static function createDefault(?string $workingDirectory = null, string $directoryName = '.git', array $handlers = []): self
 	{
 		$repository = new RuntimeCachedGitRepository(LocalGitRepository::createDefault($workingDirectory, $directoryName));
 
@@ -48,11 +45,6 @@ final class GitVersionPanel implements IBarPanel
 		]);
 	}
 
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\BlockInterface $block
-	 *
-	 * @return $this
-	 */
 	public function addBlock(BlockInterface $block): self
 	{
 		$this->blocks[] = $block;
@@ -61,9 +53,7 @@ final class GitVersionPanel implements IBarPanel
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
 	public function getTab(): string
 	{
@@ -73,9 +63,7 @@ final class GitVersionPanel implements IBarPanel
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws \Throwable
+	 * @throws Throwable
 	 */
 	public function getPanel(): string
 	{

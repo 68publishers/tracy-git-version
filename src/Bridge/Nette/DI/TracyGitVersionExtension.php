@@ -21,14 +21,15 @@ use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use function arsort;
+use function assert;
+use function array_map;
+use function array_keys;
 
 final class TracyGitVersionExtension extends CompilerExtension
 {
 	public const TAG_GIT_REPOSITORY = '68publishers.tracy_git_version_panel.tag.git_repository';
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function getConfigSchema(): Schema
 	{
 		return Expect::structure([
@@ -38,7 +39,7 @@ final class TracyGitVersionExtension extends CompilerExtension
 					GetHeadCommand::class => new Statement(GetHeadCommandHandler::class),
 					GetLatestTagCommand::class => new Statement(GetLatestTagCommandHandler::class),
 				])
-				->mergeDefaults(TRUE)
+				->mergeDefaults()
 				->before(static function (array $items) {
 					return array_map(static function ($item) {
 						return $item instanceof Statement ? $item : new Statement($item);
@@ -49,22 +50,21 @@ final class TracyGitVersionExtension extends CompilerExtension
 					->default([
 						new Statement(CurrentStateBlock::class),
 					])
-					->mergeDefaults(TRUE)
+					->mergeDefaults()
 					->before(static function (array $items) {
 						return array_map(static function ($item) {
 							return $item instanceof Statement ? $item : new Statement($item);
 						}, $items);
 					}),
-			]),
-		]);
+			])->castTo(TracyGitVersionPanelConfig::class),
+		])->castTo(TracyGitVersionConfig::class);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
+		$config = $this->getConfig();
+		assert($config instanceof TracyGitVersionConfig);
 
 		# default git repository service
 		$builder->addDefinition($this->prefix('git_repository'))
@@ -74,21 +74,21 @@ final class TracyGitVersionExtension extends CompilerExtension
 
 		# runtime cached git repository
 		$builder->addDefinition($this->prefix('git_repository.runtime_cached'))
-			->setAutowired(FALSE)
+			->setAutowired(false)
 			->setFactory(RuntimeCachedGitRepository::class, [$this->prefix('@git_repository.resolvable')]);
 
 		# resolvable git repository
 		$builder->addDefinition($this->prefix('git_repository.resolvable'))
-			->setAutowired(FALSE)
+			->setAutowired(false)
 			->setType(ResolvableGitRepository::class);
 
 		# local directory git repository
 		$builder->addDefinition($this->prefix('git_repository.local_directory'))
-			->setAutowired(FALSE)
+			->setAutowired(false)
 			->setFactory(LocalGitRepository::class, [
 				'gitDirectory' => new Statement([GitDirectory::class, 'createAutoDetected']),
-				'handlers' => $this->config->command_handlers,
-				'source' => $this->config->source_name,
+				'handlers' => $config->command_handlers,
+				'source' => $config->source_name,
 			])
 			->addTag(self::TAG_GIT_REPOSITORY, 100);
 	}
@@ -99,6 +99,8 @@ final class TracyGitVersionExtension extends CompilerExtension
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
+		$config = $this->getConfig();
+		assert($config instanceof TracyGitVersionConfig);
 
 		# pass git repositories into resolvable repository
 		$resolvableGitRepository = $builder->getDefinition($this->prefix('git_repository.resolvable'));
@@ -117,9 +119,9 @@ final class TracyGitVersionExtension extends CompilerExtension
 			return;
 		}
 
-		$barServiceName = $builder->getByType(Bar::class, FALSE);
+		$barServiceName = $builder->getByType(Bar::class, false);
 
-		if (NULL === $barServiceName) {
+		if (null === $barServiceName) {
 			return;
 		}
 
@@ -129,16 +131,13 @@ final class TracyGitVersionExtension extends CompilerExtension
 		$barService->addSetup('addPanel', [
 			new Statement(GitVersionPanel::class, [
 				$this->prefix('@git_repository'),
-				$this->config->panel->blocks,
+				$config->panel->blocks,
 			]),
 		]);
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function isDebugMode(): bool
 	{
-		return $this->getContainerBuilder()->parameters['debugMode'] ?? FALSE;
+		return $this->getContainerBuilder()->parameters['debugMode'] ?? false;
 	}
 }

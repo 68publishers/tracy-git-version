@@ -10,6 +10,9 @@ use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\ExportedGitCommandHandlerInterface;
+use function is_readable;
+use function json_decode;
+use function file_get_contents;
 
 final class ExportedGitRepository extends AbstractGitRepository
 {
@@ -17,14 +20,13 @@ final class ExportedGitRepository extends AbstractGitRepository
 
 	private string $source;
 
-	private ?array $json = NULL;
+	/** @var array<mixed, mixed>|null */
+	private ?array $json = null;
 
-	private ?bool $valid = NULL;
+	private ?bool $valid = null;
 
 	/**
-	 * @param string $file
-	 * @param array  $handlers
-	 * @param string $source
+	 * @param array<class-string, GitCommandHandlerInterface> $handlers
 	 */
 	public function __construct(string $file, array $handlers = [], string $source = self::SOURCE_EXPORT)
 	{
@@ -34,11 +36,6 @@ final class ExportedGitRepository extends AbstractGitRepository
 		parent::__construct($handlers);
 	}
 
-	/**
-	 * @param string $file
-	 *
-	 * @return static
-	 */
 	public static function createDefault(string $file): self
 	{
 		return new self($file, [
@@ -47,25 +44,16 @@ final class ExportedGitRepository extends AbstractGitRepository
 		]);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function getSource(): string
 	{
 		return $this->source;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function isAccessible(): bool
 	{
 		return $this->isValid();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function addHandler(string $commandClassname, GitCommandHandlerInterface $handler): void
 	{
 		if ($handler instanceof ExportedGitCommandHandlerInterface && $this->isValid()) {
@@ -75,31 +63,28 @@ final class ExportedGitRepository extends AbstractGitRepository
 		parent::addHandler($commandClassname, $handler);
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function isValid(): bool
 	{
-		if (NULL !== $this->valid) {
+		if (null !== $this->valid) {
 			return $this->valid;
 		}
 
 		if (!is_readable($this->file)) {
-			return $this->valid = FALSE;
+			return $this->valid = false;
 		}
 
 		$content = @file_get_contents($this->file);
 
-		if (FALSE === $content) {
-			return $this->valid = FALSE;
+		if (false === $content) {
+			return $this->valid = false;
 		}
 
 		try {
-			$this->json = (array) json_decode($content, TRUE, 512, JSON_THROW_ON_ERROR);
+			$this->json = (array) json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 
-			return $this->valid = TRUE;
+			return $this->valid = true;
 		} catch (JsonException $e) {
-			return $this->valid = FALSE;
+			return $this->valid = false;
 		}
 	}
 }

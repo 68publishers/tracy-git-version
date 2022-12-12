@@ -11,29 +11,25 @@ abstract class AbstractLocalDirectoryCommandHandler implements LocalDirectoryGit
 {
 	private ?GitDirectory $gitDirectory;
 
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory|NULL $gitDirectory
-	 */
-	public function __construct(?GitDirectory $gitDirectory = NULL)
+	public function __construct(?GitDirectory $gitDirectory = null)
 	{
 		$this->gitDirectory = $gitDirectory;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public function withGitDirectory(GitDirectory $gitDirectory): LocalDirectoryGitCommandHandlerInterface
 	{
-		return new static($gitDirectory);
+		$handler = clone $this;
+		$handler->gitDirectory = $gitDirectory;
+
+		return $handler;
 	}
 
 	/**
-	 * @return \SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException
 	 */
 	protected function getGitDirectory(): GitDirectory
 	{
-		if (NULL === $this->gitDirectory) {
+		if (null === $this->gitDirectory) {
 			throw GitDirectoryException::gitDirectoryNotProvided();
 		}
 

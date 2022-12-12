@@ -1,0 +1,6 @@
+extensions:
+	tracy_git_version: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExtension
+	tracy_git_version.export: SixtyEightPublishers\TracyGitVersion\Bridge\Nette\DI\TracyGitVersionExportExtension
+
+application:
+	scanDirs: no

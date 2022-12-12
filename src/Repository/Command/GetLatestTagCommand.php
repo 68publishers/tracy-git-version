@@ -8,9 +8,6 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
 
 final class GetLatestTagCommand implements GitCommandInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
 	public function __toString(): string
 	{
 		return 'GET_LATEST_TAG()';

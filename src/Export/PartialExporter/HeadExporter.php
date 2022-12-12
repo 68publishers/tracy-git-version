@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersion\Export\PartialExporter;
 
 use SixtyEightPublishers\TracyGitVersion\Export\Config;
+use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head;
 use SixtyEightPublishers\TracyGitVersion\Export\ExporterInterface;
 use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
+use function assert;
 
 final class HeadExporter implements ExporterInterface
 {
 	/**
-	 * {@inheritDoc}
-	 *
 	 * @throws \SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException
 	 */
 	public function export(Config $config, ?GitRepositoryInterface $gitRepository): array
 	{
-		if (NULL === $gitRepository) {
+		if (null === $gitRepository) {
 			throw BadMethodCallException::gitRepositoryNotProvidedForPartialExporter($this);
 		}
 
@@ -27,13 +27,13 @@ final class HeadExporter implements ExporterInterface
 			return [];
 		}
 
-		/** @var \SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head $head */
 		$head = $gitRepository->handle(new GetHeadCommand());
+		assert($head instanceof Head);
 
 		return [
 			'head' => [
 				'branch' => $head->getBranch(),
-				'commit_hash' => NULL !== $head->getCommitHash() ? $head->getCommitHash()->getValue() : NULL,
+				'commit_hash' => null !== $head->getCommitHash() ? $head->getCommitHash()->getValue() : null,
 			],
 		];
 	}

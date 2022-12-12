@@ -11,15 +11,10 @@ final class ExportedFooCommandHandler extends AbstractExportedCommandHandler
 {
 	public int $callingCounter = 0;
 
-	/**
-	 * @param \SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\FooCommand $command
-	 *
-	 * @return string
-	 */
 	public function __invoke(FooCommand $command): ?string
 	{
 		$this->callingCounter++;
 
-		return $this->getExportedValue()['foo'] ?? NULL;
+		return $this->getExportedValue()['foo'] ?? null;
 	}
 }
