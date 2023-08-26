@@ -36,8 +36,12 @@ final class TracyGitVersionExtension extends CompilerExtension
             'source_name' => Expect::string(GitRepositoryInterface::SOURCE_GIT_DIRECTORY),
             'command_handlers' => Expect::arrayOf(Expect::anyOf(Expect::type(Statement::class), Expect::string()), 'string')
                 ->default([
-                    GetHeadCommand::class => new Statement(GetHeadCommandHandler::class),
-                    GetLatestTagCommand::class => new Statement(GetLatestTagCommandHandler::class),
+                    GetHeadCommand::class => new Statement(GetHeadCommandHandler::class, [
+                        'useBinary' => true,
+                    ]),
+                    GetLatestTagCommand::class => new Statement(GetLatestTagCommandHandler::class, [
+                        'useBinary' => true,
+                    ]),
                 ])
                 ->mergeDefaults()
                 ->before(static function (array $items) {

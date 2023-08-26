@@ -29,13 +29,13 @@ final class LocalGitRepository extends AbstractGitRepository
         parent::__construct($handlers);
     }
 
-    public static function createDefault(?string $workingDirectory = null, string $directoryName = '.git'): self
+    public static function createDefault(?string $workingDirectory = null, string $directoryName = '.git', bool $useBinary = true): self
     {
         return new self(
             GitDirectory::createAutoDetected($workingDirectory, $directoryName),
             [
-                GetHeadCommand::class => new GetHeadCommandHandler(),
-                GetLatestTagCommand::class => new GetLatestTagCommandHandler(),
+                GetHeadCommand::class => new GetHeadCommandHandler(null, $useBinary),
+                GetLatestTagCommand::class => new GetLatestTagCommandHandler(null, $useBinary),
             ],
         );
     }

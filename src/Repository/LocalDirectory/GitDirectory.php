@@ -5,10 +5,18 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory;
 
 use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
+use function array_merge;
 use function dirname;
+use function fclose;
 use function file_exists;
+use function implode;
 use function is_dir;
+use function is_resource;
+use function proc_close;
+use function proc_open;
 use function realpath;
+use function stream_get_contents;
+use function trim;
 
 final class GitDirectory
 {
@@ -69,6 +77,62 @@ final class GitDirectory
         } while ($workingDirectory !== $currentDirectory);
 
         throw GitDirectoryException::gitDirectoryNotFound($workingDirectory);
+    }
+
+    /**
+     * @param array<int, string> $command
+     */
+    public function createGitCommand(array $command): string
+    {
+        $gitDir = (string) $this;
+        $parts = array_merge(
+            [
+                'git',
+                '--git-dir',
+                $gitDir,
+                '--work-tree',
+                dirname($gitDir),
+            ],
+            $command,
+        );
+
+        return implode(' ', $parts);
+    }
+
+    /**
+     * @param array<int, string> $command
+     *
+     * @return array{
+     *     code: int,
+     *     out: string,
+     *     err: string,
+     * }
+     */
+    public function executeGitCommand(array $command): array
+    {
+        $process = proc_open(
+            $this->createGitCommand($command),
+            [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ],
+            $pipes,
+            __DIR__,
+            null,
+        );
+
+        $stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        return [
+            'code' => is_resource($process) ? proc_close($process) : 1,
+            'out' => trim((string) $stdout),
+            'err' => trim((string) $stderr),
+        ];
     }
 
     /**

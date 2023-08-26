@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersion\Tests\Repository\LocalDirectory;
 
+use CzProject\GitPhp\GitRepository;
 use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Tests\GitHelper;
 use Tester\Assert;
 use Tester\TestCase;
 use function realpath;
@@ -13,8 +15,13 @@ use function sprintf;
 
 require __DIR__ . '/../../bootstrap.php';
 
+/**
+ * @testCase
+ */
 final class GitDirectoryTest extends TestCase
 {
+    private GitRepository $repository;
+
     public function testExceptionShouldBeThrownOnInvalidWorkingDirectory(): void
     {
         $workingDirectory = __DIR__ . '/non/existent/directory';
@@ -43,7 +50,7 @@ final class GitDirectoryTest extends TestCase
 
     public function testCreateGitDirectoryDirectly(): void
     {
-        $dir = __DIR__ . '/../../files/test-git';
+        $dir = $this->repository->getRepositoryPath() . '/.git';
         $gitDirectory = GitDirectory::createFromGitDirectory($dir);
 
         Assert::same(realpath($dir), (string) $gitDirectory);
@@ -51,15 +58,48 @@ final class GitDirectoryTest extends TestCase
 
     public function testCreateGitDirectoryFromWorkingDirectory(): void
     {
-        $realGitDirectoryPath = realpath(__DIR__ . '/../../files/test-git');
+        GitHelper::createFile($this->repository, 'nested-directory-1/nested-directory-2/test.txt', '');
 
-        $gitDirectory = GitDirectory::createAutoDetected(__DIR__ . '/../../files', 'test-git');
+        $workingDir = $this->repository->getRepositoryPath();
+        $gitDir = '.git';
 
-        Assert::same($realGitDirectoryPath, (string) $gitDirectory);
+        $gitDirectory = GitDirectory::createAutoDetected($workingDir, $gitDir);
 
-        $gitDirectory = GitDirectory::createAutoDetected(__DIR__ . '/../../files/nested-directory-1/nested-directory-2', 'test-git');
+        Assert::same($workingDir . '/' . $gitDir, (string) $gitDirectory);
 
-        Assert::same($realGitDirectoryPath, (string) $gitDirectory);
+        $gitDirectory = GitDirectory::createAutoDetected($workingDir . '/nested-directory-1/nested-directory-2', $gitDir);
+
+        Assert::same($workingDir . '/' . $gitDir, (string) $gitDirectory);
+    }
+
+    public function testGitCommandShouldBeExecuted(): void
+    {
+        GitHelper::createFile($this->repository, 'test.txt', '');
+        GitHelper::commit($this->repository, 'first commit');
+        GitHelper::createFile($this->repository, 'test2.txt', '');
+        GitHelper::commit($this->repository, 'second commit');
+
+        $gitDirectory = GitDirectory::createAutoDetected($this->repository->getRepositoryPath());
+
+        Assert::same([
+            'code' => 0,
+            'out' => '2',
+            'err' => '',
+        ], $gitDirectory->executeGitCommand([
+            'rev-list',
+            '--all',
+            '--count',
+        ]));
+    }
+
+    protected function setUp(): void
+    {
+        $this->repository = GitHelper::init();
+    }
+
+    protected function tearDown(): void
+    {
+        GitHelper::destroy($this->repository);
     }
 }
 

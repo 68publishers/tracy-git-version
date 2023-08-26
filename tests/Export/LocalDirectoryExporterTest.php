@@ -17,7 +17,7 @@ final class LocalDirectoryExporterTest extends TestCase
     public function testWithDefaultConfig(): void
     {
         $exporter = new LocalDirectoryExporter();
-        $config = Config::createDefault();
+        $config = Config::createDefault(false);
 
         # directory must be overridden
         $config->setGitDirectory(GitDirectory::createFromGitDirectory(__DIR__ . '/../files/test-git'));
@@ -39,7 +39,7 @@ final class LocalDirectoryExporterTest extends TestCase
     public function testWithDefaultConfigAndDetachedHead(): void
     {
         $exporter = new LocalDirectoryExporter();
-        $config = Config::createDefault();
+        $config = Config::createDefault(false);
 
         # directory must be override
         $config->setGitDirectory(GitDirectory::createFromGitDirectory(__DIR__ . '/../files/test-git-detached'));
