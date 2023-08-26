@@ -6,5 +6,5 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
 interface GitCommandInterface
 {
-	public function __toString(): string;
+    public function __toString(): string;
 }

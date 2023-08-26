@@ -8,8 +8,8 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
 
 final class GetHeadCommand implements GitCommandInterface
 {
-	public function __toString(): string
-	{
-		return 'GET_HEAD()';
-	}
+    public function __toString(): string
+    {
+        return 'GET_HEAD()';
+    }
 }

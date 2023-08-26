@@ -8,6 +8,6 @@ use Nette\DI\Definitions\Statement;
 
 final class TracyGitVersionPanelConfig
 {
-	/** @var array<Statement> */
-	public array $blocks;
+    /** @var array<Statement> */
+    public array $blocks;
 }

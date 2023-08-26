@@ -9,5 +9,5 @@ use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 
 interface LocalDirectoryGitCommandHandlerInterface extends GitCommandHandlerInterface
 {
-	public function withGitDirectory(GitDirectory $gitDirectory): self;
+    public function withGitDirectory(GitDirectory $gitDirectory): self;
 }

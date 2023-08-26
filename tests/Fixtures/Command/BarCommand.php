@@ -9,20 +9,20 @@ use function sprintf;
 
 final class BarCommand implements GitCommandInterface
 {
-	private int $num;
+    private int $num;
 
-	public function __construct(int $num)
-	{
-		$this->num = $num;
-	}
+    public function __construct(int $num)
+    {
+        $this->num = $num;
+    }
 
-	public function getNum(): int
-	{
-		return $this->num;
-	}
+    public function getNum(): int
+    {
+        return $this->num;
+    }
 
-	public function __toString(): string
-	{
-		return sprintf('BAR(%d)', $this->num);
-	}
+    public function __toString(): string
+    {
+        return sprintf('BAR(%d)', $this->num);
+    }
 }

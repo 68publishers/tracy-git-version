@@ -8,8 +8,8 @@ use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandInterface;
 
 final class FooCommand implements GitCommandInterface
 {
-	public function __toString(): string
-	{
-		return 'FOO()';
-	}
+    public function __toString(): string
+    {
+        return 'FOO()';
+    }
 }
