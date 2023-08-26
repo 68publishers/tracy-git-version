@@ -10,11 +10,11 @@ use function sprintf;
 
 final class UnhandledCommandException extends Exception implements ExceptionInterface
 {
-	public static function cantHandleCommand(GitCommandInterface $command): self
-	{
-		return new self(sprintf(
-			'Can\'t handle git command %s.',
-			$command
-		));
-	}
+    public static function cantHandleCommand(GitCommandInterface $command): self
+    {
+        return new self(sprintf(
+            'Can\'t handle git command %s.',
+            $command,
+        ));
+    }
 }

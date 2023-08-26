@@ -8,25 +8,25 @@ use SixtyEightPublishers\TracyGitVersion\Repository\AbstractGitRepository;
 
 final class SimpleGitRepository extends AbstractGitRepository
 {
-	private string $source;
+    private string $source;
 
-	private bool $accessible;
+    private bool $accessible;
 
-	public function __construct(string $source, bool $accessible, array $handlers = [])
-	{
-		parent::__construct($handlers);
+    public function __construct(string $source, bool $accessible, array $handlers = [])
+    {
+        parent::__construct($handlers);
 
-		$this->source = $source;
-		$this->accessible = $accessible;
-	}
+        $this->source = $source;
+        $this->accessible = $accessible;
+    }
 
-	public function getSource(): string
-	{
-		return $this->source;
-	}
+    public function getSource(): string
+    {
+        return $this->source;
+    }
 
-	public function isAccessible(): bool
-	{
-		return $this->accessible;
-	}
+    public function isAccessible(): bool
+    {
+        return $this->accessible;
+    }
 }

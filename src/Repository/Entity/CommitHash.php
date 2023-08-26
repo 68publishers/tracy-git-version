@@ -6,20 +6,20 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository\Entity;
 
 final class CommitHash
 {
-	private string $value;
+    private string $value;
 
-	public function __construct(string $value)
-	{
-		$this->value = $value;
-	}
+    public function __construct(string $value)
+    {
+        $this->value = $value;
+    }
 
-	public function getValue(): string
-	{
-		return $this->value;
-	}
+    public function getValue(): string
+    {
+        return $this->value;
+    }
 
-	public function compare(self $commitHash): bool
-	{
-		return $this->getValue() === $commitHash->getValue();
-	}
+    public function compare(self $commitHash): bool
+    {
+        return $this->getValue() === $commitHash->getValue();
+    }
 }

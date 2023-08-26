@@ -8,10 +8,10 @@ use Nette\DI\Definitions\Statement;
 
 final class TracyGitVersionExportConfig
 {
-	public string $source_name;
+    public string $source_name;
 
-	public string $export_filename;
+    public string $export_filename;
 
-	/** @var array<Statement> */
-	public array $command_handlers;
+    /** @var array<Statement> */
+    public array $command_handlers;
 }

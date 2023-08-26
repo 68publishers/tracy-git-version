@@ -5,15 +5,15 @@ $possibleAutoloadFiles = [__DIR__ . '/../../autoload.php', __DIR__ . '/../autolo
 $autoloadFile = null;
 
 foreach ($possibleAutoloadFiles as $possibleAutoloadFile) {
-	if (file_exists($possibleAutoloadFile)) {
-		$autoloadFile = $possibleAutoloadFile;
+    if (file_exists($possibleAutoloadFile)) {
+        $autoloadFile = $possibleAutoloadFile;
 
-		break;
-	}
+        break;
+    }
 }
 
 if (null === $autoloadFile) {
-	throw new RuntimeException('Unable to find composer autoload.php file.');
+    throw new RuntimeException('Unable to find composer autoload.php file.');
 }
 
 require_once $autoloadFile;

@@ -8,10 +8,10 @@ use Nette\DI\Definitions\Statement;
 
 final class TracyGitVersionConfig
 {
-	public string $source_name;
+    public string $source_name;
 
-	/** @var array<class-string, Statement> */
-	public array $command_handlers;
+    /** @var array<class-string, Statement> */
+    public array $command_handlers;
 
-	public TracyGitVersionPanelConfig $panel;
+    public TracyGitVersionPanelConfig $panel;
 }
