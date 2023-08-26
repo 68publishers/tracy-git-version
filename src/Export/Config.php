@@ -31,13 +31,13 @@ final class Config
         return new self();
     }
 
-    public static function createDefault(): self
+    public static function createDefault(bool $useBinary = true): self
     {
         return self::create()
             ->setGitDirectory(GitDirectory::createAutoDetected())
             ->addCommandHandlers([
-                GetHeadCommand::class => new GetHeadCommandHandler(),
-                GetLatestTagCommand::class => new GetLatestTagCommandHandler(),
+                GetHeadCommand::class => new GetHeadCommandHandler(null, $useBinary),
+                GetLatestTagCommand::class => new GetLatestTagCommandHandler(null, $useBinary),
             ])
             ->addExporters([
                 new HeadExporter(),

@@ -22,11 +22,11 @@ tests.all:
 	PHP=82 make tests.run
 
 cs.fix:
-	PHP=81 make composer.update
+	PHP=74 make composer.update
 	docker exec 68publishers.tracy-git-version-panel.81 vendor/bin/php-cs-fixer fix -v
 
 cs.check:
-	PHP=81 make composer.update
+	PHP=74 make composer.update
 	docker exec 68publishers.tracy-git-version-panel.81 vendor/bin/php-cs-fixer fix -v --dry-run
 
 stan:

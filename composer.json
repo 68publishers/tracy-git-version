@@ -15,15 +15,16 @@
 		"tracy/tracy": "^2.6.0"
 	},
 	"require-dev": {
+		"czproject/git-php": "^4.2",
 		"friendsofphp/php-cs-fixer": "^3.13",
 		"nette/application": "^3.1.0",
 		"nette/bootstrap": "^3.1",
 		"nette/di": "^3.0.10",
-		"symfony/console": "^5.4 | ^6.0",
 		"nette/tester": "^2.4.3",
 		"phpstan/phpstan": "^1.9",
 		"phpstan/phpstan-nette": "^1.1",
-		"roave/security-advisories": "dev-latest"
+		"roave/security-advisories": "dev-latest",
+		"symfony/console": "^5.4 | ^6.0"
 	},
 	"suggest": {
 		"nette/di": "For an integration with the Nette Framework.",

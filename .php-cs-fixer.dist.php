@@ -25,8 +25,6 @@ return (new Config())
             'elements' => [
                 'arguments',
                 'arrays',
-                'match',
-                'parameters',
             ],
         ],
         'constant_case' => [
