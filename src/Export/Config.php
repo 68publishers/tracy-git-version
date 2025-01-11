@@ -98,8 +98,6 @@ final class Config
 
     /**
      * @param array<ExporterInterface> $exporters
-     *
-     * @return $this
      */
     public function addExporters(array $exporters): self
     {

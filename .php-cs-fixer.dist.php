@@ -67,7 +67,7 @@ return (new Config())
             'spacing' => 'one',
         ],
         'no_superfluous_phpdoc_tags' => [
-            'allow_mixed' => false,
+            'allow_mixed' => true,
             'remove_inheritdoc' => true,
             'allow_unused_params' => false,
         ],
