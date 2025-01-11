@@ -31,7 +31,8 @@ final class ExportRepositoryCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Clones important things from a git repository to the output directory.')
+        $this->setName('export-repository')
+            ->setDescription('Clones important things from a git repository to the output directory.')
             ->addOption('config', null, InputOption::VALUE_REQUIRED, 'The path to a config file.')
             ->addOption('output-file', null, InputOption::VALUE_REQUIRED, 'The filename of the output file.')
             ->addOption('dump-only', null, InputOption::VALUE_NONE, 'Dumps exported file into the console only.');
