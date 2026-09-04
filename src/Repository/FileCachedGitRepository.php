@@ -12,6 +12,7 @@ use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectoryF
 use function array_key_exists;
 use function array_merge;
 use function basename;
+use function chmod;
 use function file_get_contents;
 use function file_put_contents;
 use function glob;
@@ -149,6 +150,9 @@ final class FileCachedGitRepository implements GitRepositoryInterface
         if (false === $temporary || false === @file_put_contents($temporary, serialize($entries))) {
             return;
         }
+
+        # tempnam() creates the file with 0600; CLI and web server usually run as different users and both read the cache
+        @chmod($temporary, 0666);
 
         if (!@rename($temporary, $this->filename($fingerprint))) {
             @unlink($temporary);
