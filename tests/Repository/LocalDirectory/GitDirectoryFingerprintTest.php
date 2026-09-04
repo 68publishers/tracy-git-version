@@ -40,6 +40,18 @@ final class GitDirectoryFingerprintTest extends TestCase
             $afterTag = $fingerprint->compute();
 
             Assert::notSame($afterSecondCommit, $afterTag);
+
+            # re-pointing an existing tag within the same second keeps names and mtimes, only the ref content changes
+            $repository->execute('tag', '-f', 'v1.0.0', 'HEAD~1');
+            $afterRepoint = $fingerprint->compute();
+
+            Assert::notSame($afterTag, $afterRepoint);
+
+            # packing refs moves the tag from a loose file into packed-refs, the state itself is unchanged in meaning
+            # but the fingerprint may change; what matters is that it is still computed and stable afterwards
+            $repository->execute('pack-refs', '--all');
+
+            Assert::same($fingerprint->compute(), $fingerprint->compute());
         } finally {
             GitHelper::destroy($repository);
         }

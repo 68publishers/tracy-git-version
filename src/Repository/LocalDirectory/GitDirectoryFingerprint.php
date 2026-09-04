@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory;
 
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
-use function clearstatcache;
+use SplFileInfo;
+use function assert;
 use function file_get_contents;
-use function filemtime;
-use function filesize;
 use function implode;
+use function is_dir;
 use function is_readable;
 use function md5;
-use function scandir;
 use function strlen;
 use function strpos;
 use function substr;
@@ -20,7 +22,8 @@ use function trim;
 
 /**
  * Cheap identity of the repository state that command results depend on: the HEAD commit and the state of tags.
- * Reads a few files from the .git directory, never runs git. NULL means the state cannot be determined and
+ * Built purely from file contents (HEAD, the branch ref, loose tag refs, packed-refs), so it does not depend on
+ * timestamps and never runs git. NULL means the state cannot be determined and
  * results must not be cached.
  */
 final class GitDirectoryFingerprint
@@ -53,17 +56,20 @@ final class GitDirectoryFingerprint
             $parts[] = $this->read($gitDirectory . DIRECTORY_SEPARATOR . trim(substr($head, 4, strlen($head)))) ?? 'packed';
         }
 
-        # tags: loose refs are files in refs/tags (names + directory mtime), fetched or packed tags rewrite packed-refs
+        # tags: content of every loose ref under refs/tags and of packed-refs; content, not mtime, so a tag re-pointed
+        # within the same second (`git tag -f`) or a re-packed file of the same size still changes the fingerprint
         $tagsDirectory = $gitDirectory . DIRECTORY_SEPARATOR . 'refs' . DIRECTORY_SEPARATOR . 'tags';
-        $packedRefs = $gitDirectory . DIRECTORY_SEPARATOR . 'packed-refs';
 
-        clearstatcache(true, $tagsDirectory);
-        clearstatcache(true, $packedRefs);
+        if (is_dir($tagsDirectory)) {
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tagsDirectory, FilesystemIterator::SKIP_DOTS));
 
-        $parts[] = implode(',', @scandir($tagsDirectory) ?: []);
-        $parts[] = (string) @filemtime($tagsDirectory);
-        $parts[] = (string) @filemtime($packedRefs);
-        $parts[] = (string) @filesize($packedRefs);
+            foreach ($iterator as $file) {
+                assert($file instanceof SplFileInfo);
+                $parts[] = $file->getPathname() . '=' . ($this->read($file->getPathname()) ?? '');
+            }
+        }
+
+        $parts[] = $this->read($gitDirectory . DIRECTORY_SEPARATOR . 'packed-refs') ?? '';
 
         return md5(implode('|', $parts));
     }
