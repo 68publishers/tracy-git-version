@@ -13,10 +13,14 @@ use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\CurrentStateBlock;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetNearestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\FileCachedGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetNearestTagCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectoryFingerprint;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
@@ -25,6 +29,7 @@ use function array_keys;
 use function array_map;
 use function arsort;
 use function assert;
+use function is_string;
 
 final class TracyGitVersionExtension extends CompilerExtension
 {
@@ -42,6 +47,9 @@ final class TracyGitVersionExtension extends CompilerExtension
                     GetLatestTagCommand::class => new Statement(GetLatestTagCommandHandler::class, [
                         'useBinary' => true,
                     ]),
+                    GetNearestTagCommand::class => new Statement(GetNearestTagCommandHandler::class, [
+                        'useBinary' => true,
+                    ]),
                 ])
                 ->mergeDefaults()
                 ->before(static function (array $items) {
@@ -49,6 +57,11 @@ final class TracyGitVersionExtension extends CompilerExtension
                         return $item instanceof Statement ? $item : new Statement($item);
                     }, $items);
                 }),
+            # results of git commands persisted across requests, invalidated by the HEAD commit and the state of tags
+            'cache' => Expect::structure([
+                'enabled' => Expect::bool(true),
+                'directory' => Expect::string()->nullable()->default(null),
+            ])->castTo(TracyGitVersionCacheConfig::class),
             'panel' => Expect::structure([
                 'blocks' => Expect::listOf(Expect::anyOf(Expect::type(Statement::class), Expect::string()))
                     ->default([
@@ -76,10 +89,27 @@ final class TracyGitVersionExtension extends CompilerExtension
             ->setType(GitRepositoryInterface::class)
             ->setFactory($this->prefix('@git_repository.runtime_cached'));
 
+        $cacheDirectory = $this->resolveCacheDirectory($config->cache);
+
         # runtime cached git repository
         $builder->addDefinition($this->prefix('git_repository.runtime_cached'))
             ->setAutowired(false)
-            ->setFactory(RuntimeCachedGitRepository::class, [$this->prefix('@git_repository.resolvable')]);
+            ->setFactory(RuntimeCachedGitRepository::class, [
+                null !== $cacheDirectory ? $this->prefix('@git_repository.file_cached') : $this->prefix('@git_repository.resolvable'),
+            ]);
+
+        # file cached git repository, transparent when the .git directory is not available
+        if (null !== $cacheDirectory) {
+            $builder->addDefinition($this->prefix('git_repository.file_cached'))
+                ->setAutowired(false)
+                ->setFactory(FileCachedGitRepository::class, [
+                    'inner' => $this->prefix('@git_repository.resolvable'),
+                    'fingerprint' => new Statement(GitDirectoryFingerprint::class, [
+                        new Statement([GitDirectory::class, 'createAutoDetected']),
+                    ]),
+                    'directory' => $cacheDirectory,
+                ]);
+        }
 
         # resolvable git repository
         $builder->addDefinition($this->prefix('git_repository.resolvable'))
@@ -135,6 +165,24 @@ final class TracyGitVersionExtension extends CompilerExtension
                 $config->panel->blocks,
             ]),
         ]);
+    }
+
+    /**
+     * Defaults to %tempDir%/tracy-git-version; without a tempDir parameter the cache stays off unless a directory is configured.
+     */
+    private function resolveCacheDirectory(TracyGitVersionCacheConfig $config): ?string
+    {
+        if (!$config->enabled) {
+            return null;
+        }
+
+        if (null !== $config->directory) {
+            return $config->directory;
+        }
+
+        $tempDir = $this->getContainerBuilder()->parameters['tempDir'] ?? null;
+
+        return is_string($tempDir) ? $tempDir . '/tracy-git-version' : null;
     }
 
     private function isDebugMode(): bool

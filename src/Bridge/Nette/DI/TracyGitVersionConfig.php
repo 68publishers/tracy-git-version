@@ -13,5 +13,7 @@ final class TracyGitVersionConfig
     /** @var array<class-string, Statement> */
     public array $command_handlers;
 
+    public TracyGitVersionCacheConfig $cache;
+
     public TracyGitVersionPanelConfig $panel;
 }

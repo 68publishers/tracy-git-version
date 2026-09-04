@@ -11,8 +11,10 @@ use Nette\Schema\Schema;
 use RuntimeException;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetNearestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetNearestTagCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 use function array_map;
@@ -33,6 +35,7 @@ final class TracyGitVersionExportExtension extends CompilerExtension
                 ->default([
                     GetHeadCommand::class => new Statement(GetHeadCommandHandler::class),
                     GetLatestTagCommand::class => new Statement(GetLatestTagCommandHandler::class),
+                    GetNearestTagCommand::class => new Statement(GetNearestTagCommandHandler::class),
                 ])
                 ->mergeDefaults()
                 ->before(static function (array $items) {

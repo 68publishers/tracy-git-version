@@ -16,16 +16,18 @@ Following repository implementations are implemented:
 - `LocalGitRepository` - Reads information from the `.git` directory
 - `ExportedGitRepository` - Reads information from [a exported JSON file](../README.md#creating-the-export-file)
 - `ResolvableGitRepository` - Combines more repositories into one. The first one that has an available data source (e.g. existing git directory/JSON file) is used.
+- `FileCachedGitRepository` - Persists results across requests in a directory; the key is a `GitDirectoryFingerprint` (HEAD commit and the state of tags), so results are recomputed only when the repository state changes. Transparent when there is no `.git` directory. It assumes a command result depends on the HEAD commit and the tags only; custom commands reading the working tree, remotes or stashes must bypass it
 - `RuntimeCachedGitRepository` - Stores results returned by commands so there are no duplicated executions
 
-As you probably guessed the `ResolvableGitRepository` and `RuntimeCachedGitRepository` are just decorators so real data fetching is done by the `LocalGitRepository` and `ExportedGitRepository`
+As you probably guessed the `ResolvableGitRepository`, `FileCachedGitRepository` and `RuntimeCachedGitRepository` are just decorators so real data fetching is done by the `LocalGitRepository` and `ExportedGitRepository`
 
 ### Default commands
 
 The package comes with the following commands
 
-- `GetHeadCommand`
-- `GetLatestTagCommand`
+- `GetHeadCommand` - the current branch and commit
+- `GetLatestTagCommand` - the newest tag in the repository, regardless of whether HEAD can reach it
+- `GetNearestTagCommand` - the most recent tag that is an ancestor of HEAD plus the number of commits HEAD is ahead of it ("which version is this checkout based on"); needs the git binary, without it the handler returns `NULL`
 
 ### Custom commands and handlers
 

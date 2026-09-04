@@ -72,6 +72,9 @@ use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\ExportedGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\RuntimeCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\FileCachedGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectoryFingerprint;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\CurrentStateBlock;
 
 # create a repository that reads from the .git directory:
@@ -83,8 +86,11 @@ $exportedGitRepository = ExportedGitRepository::createDefault('/var/git-version/
 # combine there two repositories, if the .git directory is not accessible then try to read from the export file:
 $resolvableGitRepository = new ResolvableGitRepository([$localGitRepository, $exportedGitRepository]);
 
+# add a persistent cache, results survive requests until the HEAD commit or the tags change (transparent without a .git directory):
+$fileCachedGitRepository = new FileCachedGitRepository($resolvableGitRepository, new GitDirectoryFingerprint(GitDirectory::createAutoDetected()), __DIR__ . '/../temp/tracy-git-version'); # a writable directory dedicated to this application
+
 # add runtime cache, commands results are stored so there are no duplicated calls to the real repository:
-$cachedGitRepository = new RuntimeCachedGitRepository($resolvableGitRepository);
+$cachedGitRepository = new RuntimeCachedGitRepository($fileCachedGitRepository);
 
 # add the panel into Tracy
 Debugger::getBar()->addPanel(new GitVersionPanel($cachedGitRepository, [new CurrentStateBlock()]));
@@ -105,6 +111,17 @@ The default name for the exported file is `%tempDir%/git-version/repository.json
 ```neon
 68publishers.tracy_git_version.export:
     export_filename: %tempDir%/my/custom/path.json
+```
+
+### Persistent cache
+
+Reading from the `.git` directory runs a few git processes per request (roughly 5 ms). The Nette extension therefore wraps the repository into `FileCachedGitRepository`, which persists command results in `%tempDir%/tracy-git-version`. The cache key is a fingerprint of the `.git` directory (HEAD commit, state of tags), so a commit, checkout, fetch or a new tag invalidates it and no configuration or manual clearing is needed. Without a `.git` directory (production builds reading the export file) the cache is transparent. The cache assumes that a command result depends on the HEAD commit and the tags only, which holds for the built-in commands. The directory must be owned by the process user, writable by it and by nobody else, and dedicated to the application (pruning removes other cache files in it); otherwise the cache is skipped. `NULL` results are not cached, so an outage of the git binary never sticks.
+
+```neon
+68publishers.tracy_git_version:
+    cache:
+        enabled: true                          # default
+        directory: %tempDir%/tracy-git-version # default; the cache stays off when neither this nor %tempDir% is available
 ```
 
 ### Creating the export file
