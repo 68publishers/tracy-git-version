@@ -16,14 +16,15 @@ use function chmod;
 use function file_get_contents;
 use function file_put_contents;
 use function fileowner;
+use function fileperms;
 use function function_exists;
-use function getmyuid;
 use function glob;
 use function is_array;
 use function is_dir;
 use function is_readable;
 use function is_writable;
 use function mkdir;
+use function posix_geteuid;
 use function rename;
 use function serialize;
 use function tempnam;
@@ -39,9 +40,11 @@ use function unserialize;
  * The cache assumes a command result is a function of the HEAD commit and the tags. A custom command that reads
  * anything else (working tree status, remotes, stashes) must not go through this decorator.
  *
- * Files are written 0644 and read back only when owned by the current process user, so on a shared machine another
- * local user cannot plant a crafted result. Use a directory dedicated to the application (e.g. its temp directory):
- * pruning removes the other `tgv-*.cache` files there, two applications sharing one directory would evict each other.
+ * The directory must be owned by the process user and not writable by others, files are written 0644 and read back
+ * only when owned by the process user; otherwise the cache is skipped, so on a shared machine another local user cannot
+ * plant or swap a crafted result. NULL results are not cached because NULL also stands for "git is unavailable".
+ * Use a directory dedicated to the application (e.g. its temp directory): pruning removes the other `tgv-*.cache`
+ * files there, two applications sharing one directory would evict each other.
  */
 final class FileCachedGitRepository implements GitRepositoryInterface
 {
@@ -111,6 +114,11 @@ final class FileCachedGitRepository implements GitRepositoryInterface
 
         $result = $this->inner->handle($command);
 
+        # NULL also means "git is not available right now" (no binary, failed process); such an answer must not outlive the outage
+        if (null === $result) {
+            return null;
+        }
+
         # the repository may have moved on while git was running; a result computed for the new state must not be filed under the old one
         if ($fingerprint !== $this->fingerprint->compute()) {
             return $result;
@@ -139,8 +147,8 @@ final class FileCachedGitRepository implements GitRepositoryInterface
         $filename = $this->filename($fingerprint);
         $entries = [];
 
-        # a file another local user could have written is never deserialized
-        if ($this->isOwnFile($filename) && false !== ($content = @file_get_contents($filename))) {
+        # a file another local user could have written or swapped is never deserialized
+        if ($this->isSafeDirectory() && $this->isOwnFile($filename) && false !== ($content = @file_get_contents($filename))) {
             $decoded = @unserialize($content, ['allowed_classes' => $this->allowedClasses]);
             $entries = is_array($decoded) ? $decoded : [];
 
@@ -166,8 +174,9 @@ final class FileCachedGitRepository implements GitRepositoryInterface
             return;
         }
 
-        # a directory that exists but is not writable would make tempnam() fall back to the system directory with a notice
-        if (!is_writable($this->directory)) {
+        # a directory that exists but is not writable would make tempnam() fall back to the system directory with a notice;
+        # a directory other users can write to is refused as well, they could swap the file between the ownership check and the read
+        if (!is_writable($this->directory) || !$this->isSafeDirectory()) {
             return;
         }
 
@@ -199,14 +208,33 @@ final class FileCachedGitRepository implements GitRepositoryInterface
             return false;
         }
 
-        $owner = @fileowner($filename);
+        return $this->isOwnedByProcess($filename);
+    }
 
-        # ownership cannot be checked on this platform: accept the file, permissions still protect it
-        if (false === $owner || !function_exists('getmyuid')) {
+    /**
+     * Owned by the process and not writable by group or others. Checked before every read and write.
+     */
+    private function isSafeDirectory(): bool
+    {
+        $permissions = @fileperms($this->directory);
+
+        if (false === $permissions || 0 !== ($permissions & 0022)) {
+            return false;
+        }
+
+        return $this->isOwnedByProcess($this->directory);
+    }
+
+    private function isOwnedByProcess(string $path): bool
+    {
+        # getmyuid() would return the owner of the script file, the process may run as someone else
+        if (!function_exists('posix_geteuid')) {
             return true;
         }
 
-        return $owner === getmyuid();
+        $owner = @fileowner($path);
+
+        return false === $owner || $owner === posix_geteuid();
     }
 
     private function filename(string $fingerprint): string

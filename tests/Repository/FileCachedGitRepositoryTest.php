@@ -17,6 +17,7 @@ use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\FooResult;
 use SixtyEightPublishers\TracyGitVersion\Tests\GitHelper;
 use Tester\Assert;
 use Tester\TestCase;
+use function array_shift;
 use function chmod;
 use function glob;
 use function is_dir;
@@ -88,6 +89,57 @@ final class FileCachedGitRepositoryTest extends TestCase
             (new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory))->handle(new GetNearestTagCommand());
 
             Assert::same([], glob($cacheDirectory . '/tgv-*.cache') ?: []);
+        } finally {
+            GitHelper::destroy($repository);
+            FileSystem::delete($cacheDirectory);
+        }
+    }
+
+    public function testNullResultIsNotCached(): void
+    {
+        $repository = GitHelper::init();
+        $cacheDirectory = sys_get_temp_dir() . '/' . uniqid('tgv-cache-', true);
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+
+            # first answer: git unavailable (NULL); second answer: git is back
+            $answers = [null, new NearestTag(new Tag('v1.0.0', new CommitHash('8f2c308e3a5330b7924634edd7aa38eec97a4114')), 0)];
+            $inner = new CountingGitRepository(static function () use (&$answers) {
+                return array_shift($answers);
+            });
+            $fingerprint = new GitDirectoryFingerprint(GitDirectory::createAutoDetected($repository->getRepositoryPath()));
+            $cached = new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory);
+
+            Assert::null($cached->handle(new GetNearestTagCommand()));
+            Assert::type(NearestTag::class, $cached->handle(new GetNearestTagCommand()));
+            Assert::same(2, $inner->calls);
+        } finally {
+            GitHelper::destroy($repository);
+            FileSystem::delete($cacheDirectory);
+        }
+    }
+
+    public function testDirectoryWritableByOthersIsRefused(): void
+    {
+        $repository = GitHelper::init();
+        $cacheDirectory = sys_get_temp_dir() . '/' . uniqid('tgv-cache-', true);
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+            FileSystem::createDir($cacheDirectory, 0777);
+            chmod($cacheDirectory, 0777);
+
+            $inner = new CountingGitRepository(static fn (): NearestTag => new NearestTag(new Tag('v1.0.0', new CommitHash('8f2c308e3a5330b7924634edd7aa38eec97a4114')), 0));
+            $fingerprint = new GitDirectoryFingerprint(GitDirectory::createAutoDetected($repository->getRepositoryPath()));
+
+            (new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory))->handle(new GetNearestTagCommand());
+            (new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory))->handle(new GetNearestTagCommand());
+
+            Assert::same(2, $inner->calls);
+            Assert::same([], glob($cacheDirectory . '/*') ?: []);
         } finally {
             GitHelper::destroy($repository);
             FileSystem::delete($cacheDirectory);
