@@ -11,6 +11,7 @@ use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersion\Tests\GitHelper;
 use Tester\Assert;
 use Tester\TestCase;
+use function sprintf;
 
 require __DIR__ . '/../../../bootstrap.php';
 
@@ -94,6 +95,34 @@ final class GetNearestTagCommandHandlerTest extends TestCase
 
             Assert::type(NearestTag::class, $nearestTag);
             Assert::same('v1.0.0', $nearestTag->getTag()->getName());
+            Assert::same($taggedCommitId->toString(), $nearestTag->getTag()->getCommitHash()->getValue());
+            Assert::same(1, $nearestTag->getDistance());
+        } finally {
+            GitHelper::destroy($repository);
+        }
+    }
+
+    public function testMoreThanTenReachableTagsUsingBinary(): void
+    {
+        $repository = GitHelper::init();
+
+        try {
+            # 12 tagged commits on one line, the nearest one must win even though git describe considers 10 candidates by default
+            for ($i = 1; $i <= 12; $i++) {
+                GitHelper::createFile($repository, sprintf('file%d.txt', $i), 'test');
+                $repository->commit(sprintf('commit %d', $i));
+                $repository->createTag(sprintf('v%d.0.0', $i));
+            }
+
+            $taggedCommitId = $repository->getLastCommitId();
+            GitHelper::createFile($repository, 'after.txt', 'test');
+            $repository->commit('after last tag');
+
+            $handler = new GetNearestTagCommandHandler(GitDirectory::createAutoDetected($repository->getRepositoryPath()), true);
+            $nearestTag = $handler(new GetNearestTagCommand());
+
+            Assert::type(NearestTag::class, $nearestTag);
+            Assert::same('v12.0.0', $nearestTag->getTag()->getName());
             Assert::same($taggedCommitId->toString(), $nearestTag->getTag()->getCommitHash()->getValue());
             Assert::same(1, $nearestTag->getDistance());
         } finally {

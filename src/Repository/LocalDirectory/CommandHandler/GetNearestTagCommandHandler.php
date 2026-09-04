@@ -18,6 +18,8 @@ use function preg_match;
  */
 final class GetNearestTagCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
+    private const UNLIMITED_CANDIDATES = 2147483647;
+
     private bool $useBinary;
 
     public function __construct(?GitDirectory $gitDirectory = null, bool $useBinary = false)
@@ -36,11 +38,13 @@ final class GetNearestTagCommandHandler extends AbstractLocalDirectoryCommandHan
             return null;
         }
 
+        # git stops after 10 candidate tags by default and may then miss the nearest one in a history with many tags
         $describeOutput = $this->getGitDirectory()->executeGitCommand([
             'describe',
             '--tags',
             '--long',
             '--abbrev=40',
+            '--candidates=' . self::UNLIMITED_CANDIDATES,
             'HEAD',
         ]);
 
@@ -49,12 +53,14 @@ final class GetNearestTagCommandHandler extends AbstractLocalDirectoryCommandHan
             return null;
         }
 
-        # rev-list resolves an annotated tag to the tagged commit, show-ref would return the tag object instead
+        # rev-list resolves an annotated tag to the tagged commit, show-ref would return the tag object instead;
+        # `--` is defensive only: git itself refuses tag names starting with a dash (check-ref-format)
         $commitOutput = $this->getGitDirectory()->executeGitCommand([
             'rev-list',
             '-n',
             '1',
             $matches['tag'],
+            '--',
         ]);
 
         if (0 !== $commitOutput['code'] || '' === $commitOutput['out']) {
