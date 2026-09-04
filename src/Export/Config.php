@@ -7,11 +7,14 @@ namespace SixtyEightPublishers\TracyGitVersion\Export;
 use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
 use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\HeadExporter;
 use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\LatestTagExporter;
+use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\NearestTagExporter;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetNearestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitCommandHandlerInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetNearestTagCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 use function array_key_exists;
 use function array_merge;
@@ -38,10 +41,12 @@ final class Config
             ->addCommandHandlers([
                 GetHeadCommand::class => new GetHeadCommandHandler(null, $useBinary),
                 GetLatestTagCommand::class => new GetLatestTagCommandHandler(null, $useBinary),
+                GetNearestTagCommand::class => new GetNearestTagCommandHandler(null, $useBinary),
             ])
             ->addExporters([
                 new HeadExporter(),
                 new LatestTagExporter(),
+                new NearestTagExporter(),
             ]);
     }
 

@@ -24,8 +24,9 @@ As you probably guessed the `ResolvableGitRepository` and `RuntimeCachedGitRepos
 
 The package comes with the following commands
 
-- `GetHeadCommand`
-- `GetLatestTagCommand`
+- `GetHeadCommand` - the current branch and commit
+- `GetLatestTagCommand` - the newest tag in the repository, regardless of whether HEAD can reach it
+- `GetNearestTagCommand` - the most recent tag that is an ancestor of HEAD plus the number of commits HEAD is ahead of it ("which version is this checkout based on"); needs the git binary, without it the handler returns `NULL`
 
 ### Custom commands and handlers
 

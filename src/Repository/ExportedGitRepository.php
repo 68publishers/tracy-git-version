@@ -7,9 +7,11 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository;
 use JsonException;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetNearestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\ExportedGitCommandHandlerInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\Export\CommandHandler\GetNearestTagCommandHandler;
 use function file_get_contents;
 use function is_readable;
 use function json_decode;
@@ -41,6 +43,7 @@ final class ExportedGitRepository extends AbstractGitRepository
         return new self($file, [
             GetHeadCommand::class => new GetHeadCommandHandler(),
             GetLatestTagCommand::class => new GetLatestTagCommandHandler(),
+            GetNearestTagCommand::class => new GetNearestTagCommandHandler(),
         ]);
     }
 

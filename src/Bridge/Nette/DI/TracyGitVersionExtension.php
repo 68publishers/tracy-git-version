@@ -13,9 +13,11 @@ use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\Block\CurrentStateBlock;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Tracy\GitVersionPanel;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetNearestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\GitRepositoryInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetNearestTagCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
@@ -40,6 +42,9 @@ final class TracyGitVersionExtension extends CompilerExtension
                         'useBinary' => true,
                     ]),
                     GetLatestTagCommand::class => new Statement(GetLatestTagCommandHandler::class, [
+                        'useBinary' => true,
+                    ]),
+                    GetNearestTagCommand::class => new Statement(GetNearestTagCommandHandler::class, [
                         'useBinary' => true,
                     ]),
                 ])

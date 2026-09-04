@@ -7,8 +7,10 @@ namespace SixtyEightPublishers\TracyGitVersion\Repository;
 use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
+use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetNearestTagCommand;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetHeadCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetLatestTagCommandHandler;
+use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\GetNearestTagCommandHandler;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\CommandHandler\LocalDirectoryGitCommandHandlerInterface;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 
@@ -36,6 +38,7 @@ final class LocalGitRepository extends AbstractGitRepository
             [
                 GetHeadCommand::class => new GetHeadCommandHandler(null, $useBinary),
                 GetLatestTagCommand::class => new GetLatestTagCommandHandler(null, $useBinary),
+                GetNearestTagCommand::class => new GetNearestTagCommandHandler(null, $useBinary),
             ],
         );
     }
