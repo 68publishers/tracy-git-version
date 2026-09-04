@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersion\Repository;
 
+use __PHP_Incomplete_Class;
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash;
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Head;
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\NearestTag;
@@ -11,7 +12,6 @@ use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectoryFingerprint;
 use function array_key_exists;
 use function array_merge;
-use function basename;
 use function chmod;
 use function file_get_contents;
 use function file_put_contents;
@@ -19,6 +19,7 @@ use function glob;
 use function is_array;
 use function is_dir;
 use function is_readable;
+use function is_writable;
 use function mkdir;
 use function rename;
 use function serialize;
@@ -31,9 +32,16 @@ use function unserialize;
  * and the state of tags), so a commit, checkout, fetch or a new tag invalidates everything at once and no git
  * process is started for a repository whose state has not changed. When the fingerprint cannot be computed
  * (no .git directory, e.g. a production build reading an export file) the decorator is transparent.
+ *
+ * The cache assumes a command result is a function of the HEAD commit and the tags. A custom command that reads
+ * anything else (working tree status, remotes, stashes) must not go through this decorator.
  */
 final class FileCachedGitRepository implements GitRepositoryInterface
 {
+    private const FILE_PREFIX = 'tgv-';
+
+    private const FILE_SUFFIX = '.cache';
+
     private const DEFAULT_ALLOWED_CLASSES = [
         Head::class,
         Tag::class,
@@ -121,6 +129,13 @@ final class FileCachedGitRepository implements GitRepositoryInterface
         if (is_readable($filename) && false !== ($content = @file_get_contents($filename))) {
             $decoded = @unserialize($content, ['allowed_classes' => $this->allowedClasses]);
             $entries = is_array($decoded) ? $decoded : [];
+
+            # a result class missing from $allowedClasses comes back as an incomplete object: treat it as a miss, not as a value
+            foreach ($entries as $commandId => $entry) {
+                if ($entry instanceof __PHP_Incomplete_Class) {
+                    unset($entries[$commandId]);
+                }
+            }
         }
 
         return $this->loaded[$fingerprint] = $entries;
@@ -137,15 +152,20 @@ final class FileCachedGitRepository implements GitRepositoryInterface
             return;
         }
 
-        # the state moved on, entries of previous fingerprints can never be hit again
-        foreach (glob($this->directory . DIRECTORY_SEPARATOR . '*.cache') ?: [] as $stale) {
-            if (basename($stale) !== $fingerprint . '.cache') {
+        # a directory that exists but is not writable would make tempnam() fall back to the system directory with a notice
+        if (!is_writable($this->directory)) {
+            return;
+        }
+
+        # the state moved on, entries of previous fingerprints can never be hit again; only own files are touched
+        foreach (glob($this->directory . DIRECTORY_SEPARATOR . self::FILE_PREFIX . '*' . self::FILE_SUFFIX) ?: [] as $stale) {
+            if ($stale !== $this->filename($fingerprint)) {
                 @unlink($stale);
             }
         }
 
         # atomic replace so a concurrent request never reads a half-written file
-        $temporary = tempnam($this->directory, 'tgv');
+        $temporary = @tempnam($this->directory, 'tgv');
 
         if (false === $temporary || false === @file_put_contents($temporary, serialize($entries))) {
             return;
@@ -161,6 +181,6 @@ final class FileCachedGitRepository implements GitRepositoryInterface
 
     private function filename(string $fingerprint): string
     {
-        return $this->directory . DIRECTORY_SEPARATOR . $fingerprint . '.cache';
+        return $this->directory . DIRECTORY_SEPARATOR . self::FILE_PREFIX . $fingerprint . self::FILE_SUFFIX;
     }
 }

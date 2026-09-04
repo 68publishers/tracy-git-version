@@ -10,11 +10,16 @@ use SixtyEightPublishers\TracyGitVersion\Repository\Entity\CommitHash;
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\NearestTag;
 use SixtyEightPublishers\TracyGitVersion\Repository\Entity\Tag;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
+use function escapeshellarg;
 use function preg_match;
 
 /**
  * Resolving the nearest ancestor tag requires walking the commit graph, which is only feasible through the git binary.
  * Without the binary the handler returns NULL so a consumer can fall back to GetHeadCommand.
+ *
+ * `git describe` runs without a candidate limit so the result is exact even with many reachable tags; in a repository
+ * with thousands of tags the first call after a change may take hundreds of milliseconds (FileCachedGitRepository
+ * keeps the result until HEAD or the tags change).
  */
 final class GetNearestTagCommandHandler extends AbstractLocalDirectoryCommandHandler
 {
@@ -53,13 +58,14 @@ final class GetNearestTagCommandHandler extends AbstractLocalDirectoryCommandHan
             return null;
         }
 
-        # rev-list resolves an annotated tag to the tagged commit, show-ref would return the tag object instead;
-        # `--` is defensive only: git itself refuses tag names starting with a dash (check-ref-format)
+        # rev-list resolves an annotated tag to the tagged commit, show-ref would return the tag object instead.
+        # The tag name is quoted because the command runs through a shell and git allows `; | & $ ( )` in ref names;
+        # `--` is defensive only, git itself refuses tag names starting with a dash (check-ref-format)
         $commitOutput = $this->getGitDirectory()->executeGitCommand([
             'rev-list',
             '-n',
             '1',
-            $matches['tag'],
+            escapeshellarg($matches['tag']),
             '--',
         ]);
 

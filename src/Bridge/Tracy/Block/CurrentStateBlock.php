@@ -29,7 +29,7 @@ final class CurrentStateBlock implements BlockInterface
             'Branch' => $head->getBranch() ?? ($head->isDetached() ? 'detached' : 'not versioned'),
             'Commit' => null !== $head->getCommitHash() ? $head->getCommitHash()->getValue() : 'not versioned',
             'Latest tag' => $latestTag instanceof Tag ? sprintf('%s (%s)', $latestTag->getName(), $isHeadOnLatestTag ? 'current commit' : 'last known') : 'unknown',
-            'Nearest tag' => $nearestTag instanceof NearestTag ? sprintf('%s (%s)', $nearestTag->getTag()->getName(), $nearestTag->isExact() ? 'current commit' : sprintf('+%d commits', $nearestTag->getDistance())) : 'unknown',
+            'Nearest tag' => $nearestTag instanceof NearestTag ? sprintf('%s (%s)', $nearestTag->getTag()->getName(), $nearestTag->isExact() ? 'current commit' : sprintf(1 === $nearestTag->getDistance() ? '+%d commit' : '+%d commits', $nearestTag->getDistance())) : 'unknown',
         ], 'Current state');
 
         return $block->render($gitRepository);

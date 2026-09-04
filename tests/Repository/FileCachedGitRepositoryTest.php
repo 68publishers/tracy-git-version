@@ -13,9 +13,11 @@ use SixtyEightPublishers\TracyGitVersion\Repository\FileCachedGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectory;
 use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectoryFingerprint;
 use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\CountingGitRepository;
+use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\FooResult;
 use SixtyEightPublishers\TracyGitVersion\Tests\GitHelper;
 use Tester\Assert;
 use Tester\TestCase;
+use function chmod;
 use function glob;
 use function is_dir;
 use function sys_get_temp_dir;
@@ -43,7 +45,7 @@ final class FileCachedGitRepositoryTest extends TestCase
 
             Assert::same(1, $inner->calls);
             Assert::same($first, $second);
-            Assert::count(1, glob($cacheDirectory . '/*.cache') ?: []);
+            Assert::count(1, glob($cacheDirectory . '/tgv-*.cache') ?: []);
 
             # a new instance stands for the next request: the result comes from the file, not from git
             $nextRequest = new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory);
@@ -59,9 +61,57 @@ final class FileCachedGitRepositoryTest extends TestCase
             (new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory))->handle(new GetNearestTagCommand());
 
             Assert::same(2, $inner->calls);
-            Assert::count(1, glob($cacheDirectory . '/*.cache') ?: []);
+            Assert::count(1, glob($cacheDirectory . '/tgv-*.cache') ?: []);
         } finally {
             GitHelper::destroy($repository);
+            FileSystem::delete($cacheDirectory);
+        }
+    }
+
+    public function testIncompleteClassIsTreatedAsMiss(): void
+    {
+        $repository = GitHelper::init();
+        $cacheDirectory = sys_get_temp_dir() . '/' . uniqid('tgv-cache-', true);
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+
+            $fingerprint = new GitDirectoryFingerprint(GitDirectory::createAutoDetected($repository->getRepositoryPath()));
+            $inner = new CountingGitRepository(static fn (): FooResult => new FooResult());
+
+            # the result class is not in the allowed list of the reading instance
+            (new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory, [FooResult::class]))->handle(new GetNearestTagCommand());
+            $result = (new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory))->handle(new GetNearestTagCommand());
+
+            Assert::type(FooResult::class, $result);
+            Assert::same(2, $inner->calls);
+        } finally {
+            GitHelper::destroy($repository);
+            FileSystem::delete($cacheDirectory);
+        }
+    }
+
+    public function testUnwritableDirectoryIsSkippedSilently(): void
+    {
+        $repository = GitHelper::init();
+        $cacheDirectory = sys_get_temp_dir() . '/' . uniqid('tgv-cache-', true);
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+            FileSystem::createDir($cacheDirectory, 0555);
+
+            $inner = new CountingGitRepository(static fn (): ?NearestTag => null);
+            $cached = new FileCachedGitRepository($inner, new GitDirectoryFingerprint(GitDirectory::createAutoDetected($repository->getRepositoryPath())), $cacheDirectory);
+
+            Assert::noError(static function () use ($cached): void {
+                $cached->handle(new GetNearestTagCommand());
+            });
+            Assert::same([], glob($cacheDirectory . '/*') ?: []);
+        } finally {
+            GitHelper::destroy($repository);
+            @chmod($cacheDirectory, 0755);
             FileSystem::delete($cacheDirectory);
         }
     }

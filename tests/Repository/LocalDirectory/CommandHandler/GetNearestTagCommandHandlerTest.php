@@ -130,6 +130,28 @@ final class GetNearestTagCommandHandlerTest extends TestCase
         }
     }
 
+    public function testTagNameWithShellMetacharactersUsingBinary(): void
+    {
+        $repository = GitHelper::init();
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+            $commitId = $repository->getLastCommitId();
+            # git allows these characters in ref names; the handler must pass the name to the shell quoted
+            $repository->execute('tag', 'v1.0.0;echo$(injected)|x&y');
+
+            $handler = new GetNearestTagCommandHandler(GitDirectory::createAutoDetected($repository->getRepositoryPath()), true);
+            $nearestTag = $handler(new GetNearestTagCommand());
+
+            Assert::type(NearestTag::class, $nearestTag);
+            Assert::same('v1.0.0;echo$(injected)|x&y', $nearestTag->getTag()->getName());
+            Assert::same($commitId->toString(), $nearestTag->getTag()->getCommitHash()->getValue());
+        } finally {
+            GitHelper::destroy($repository);
+        }
+    }
+
     public function testAnnotatedTagResolvesToTaggedCommitUsingBinary(): void
     {
         $repository = GitHelper::init();
