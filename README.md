@@ -87,7 +87,7 @@ $exportedGitRepository = ExportedGitRepository::createDefault('/var/git-version/
 $resolvableGitRepository = new ResolvableGitRepository([$localGitRepository, $exportedGitRepository]);
 
 # add a persistent cache, results survive requests until the HEAD commit or the tags change (transparent without a .git directory):
-$fileCachedGitRepository = new FileCachedGitRepository($resolvableGitRepository, new GitDirectoryFingerprint(GitDirectory::createAutoDetected()), '/var/tracy-git-version');
+$fileCachedGitRepository = new FileCachedGitRepository($resolvableGitRepository, new GitDirectoryFingerprint(GitDirectory::createAutoDetected()), __DIR__ . '/../temp/tracy-git-version'); # a writable directory dedicated to this application
 
 # add runtime cache, commands results are stored so there are no duplicated calls to the real repository:
 $cachedGitRepository = new RuntimeCachedGitRepository($fileCachedGitRepository);
@@ -115,7 +115,7 @@ The default name for the exported file is `%tempDir%/git-version/repository.json
 
 ### Persistent cache
 
-Reading from the `.git` directory runs a few git processes per request (roughly 5 ms). The Nette extension therefore wraps the repository into `FileCachedGitRepository`, which persists command results in `%tempDir%/tracy-git-version`. The cache key is a fingerprint of the `.git` directory (HEAD commit, state of tags), so a commit, checkout, fetch or a new tag invalidates it and no configuration or manual clearing is needed. Without a `.git` directory (production builds reading the export file) the cache is transparent. The cache assumes that a command result depends on the HEAD commit and the tags only, which holds for the built-in commands.
+Reading from the `.git` directory runs a few git processes per request (roughly 5 ms). The Nette extension therefore wraps the repository into `FileCachedGitRepository`, which persists command results in `%tempDir%/tracy-git-version`. The cache key is a fingerprint of the `.git` directory (HEAD commit, state of tags), so a commit, checkout, fetch or a new tag invalidates it and no configuration or manual clearing is needed. Without a `.git` directory (production builds reading the export file) the cache is transparent. The cache assumes that a command result depends on the HEAD commit and the tags only, which holds for the built-in commands. The directory must be writable by the process and dedicated to the application (pruning removes other cache files in it); files are read back only when owned by the current user.
 
 ```neon
 68publishers.tracy_git_version:

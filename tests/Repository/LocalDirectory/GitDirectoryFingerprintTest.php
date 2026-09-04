@@ -9,6 +9,8 @@ use SixtyEightPublishers\TracyGitVersion\Repository\LocalDirectory\GitDirectoryF
 use SixtyEightPublishers\TracyGitVersion\Tests\GitHelper;
 use Tester\Assert;
 use Tester\TestCase;
+use function chmod;
+use function is_readable;
 use function sys_get_temp_dir;
 use function uniqid;
 
@@ -61,6 +63,27 @@ final class GitDirectoryFingerprintTest extends TestCase
     {
         Assert::type('string', (new GitDirectoryFingerprint(GitDirectory::createFromGitDirectory(__DIR__ . '/../../files/test-git')))->compute());
         Assert::type('string', (new GitDirectoryFingerprint(GitDirectory::createFromGitDirectory(__DIR__ . '/../../files/test-git-detached')))->compute());
+    }
+
+    public function testNullWhenTagsAreUnreadable(): void
+    {
+        $repository = GitHelper::init();
+        $tagsDirectory = $repository->getRepositoryPath() . '/.git/refs/tags';
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+            $repository->createTag('v1.0.0');
+            chmod($tagsDirectory, 0000);
+
+            $fingerprint = new GitDirectoryFingerprint(GitDirectory::createAutoDetected($repository->getRepositoryPath()));
+
+            # root ignores permissions, there the state stays readable and the fingerprint is a string
+            Assert::true(null === $fingerprint->compute() || is_readable($tagsDirectory));
+        } finally {
+            @chmod($tagsDirectory, 0755);
+            GitHelper::destroy($repository);
+        }
     }
 
     public function testNullWithoutGitDirectory(): void

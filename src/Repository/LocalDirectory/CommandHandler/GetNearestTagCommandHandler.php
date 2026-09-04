@@ -59,13 +59,13 @@ final class GetNearestTagCommandHandler extends AbstractLocalDirectoryCommandHan
         }
 
         # rev-list resolves an annotated tag to the tagged commit, show-ref would return the tag object instead.
-        # The tag name is quoted because the command runs through a shell and git allows `; | & $ ( )` in ref names;
-        # `--` is defensive only, git itself refuses tag names starting with a dash (check-ref-format)
+        # The ref is fully qualified so a tag named e.g. `HEAD` or like a branch is not resolved as that revision, and
+        # quoted because the command runs through a shell and git allows `; | & $ ( )` in ref names.
         $commitOutput = $this->getGitDirectory()->executeGitCommand([
             'rev-list',
             '-n',
             '1',
-            escapeshellarg($matches['tag']),
+            escapeshellarg('refs/tags/' . $matches['tag']),
             '--',
         ]);
 

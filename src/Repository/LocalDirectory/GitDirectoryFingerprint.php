@@ -9,6 +9,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SixtyEightPublishers\TracyGitVersion\Exception\GitDirectoryException;
 use SplFileInfo;
+use UnexpectedValueException;
 use function assert;
 use function file_get_contents;
 use function implode;
@@ -61,11 +62,16 @@ final class GitDirectoryFingerprint
         $tagsDirectory = $gitDirectory . DIRECTORY_SEPARATOR . 'refs' . DIRECTORY_SEPARATOR . 'tags';
 
         if (is_dir($tagsDirectory)) {
-            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tagsDirectory, FilesystemIterator::SKIP_DOTS));
+            # an unreadable refs/tags (or a nested directory) throws: the state is unknown, so nothing may be cached
+            try {
+                $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tagsDirectory, FilesystemIterator::SKIP_DOTS));
 
-            foreach ($iterator as $file) {
-                assert($file instanceof SplFileInfo);
-                $parts[] = $file->getPathname() . '=' . ($this->read($file->getPathname()) ?? '');
+                foreach ($iterator as $file) {
+                    assert($file instanceof SplFileInfo);
+                    $parts[] = $file->getPathname() . '=' . ($this->read($file->getPathname()) ?? '');
+                }
+            } catch (UnexpectedValueException $e) {
+                return null;
             }
         }
 

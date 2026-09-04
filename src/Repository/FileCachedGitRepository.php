@@ -15,6 +15,9 @@ use function array_merge;
 use function chmod;
 use function file_get_contents;
 use function file_put_contents;
+use function fileowner;
+use function function_exists;
+use function getmyuid;
 use function glob;
 use function is_array;
 use function is_dir;
@@ -35,6 +38,10 @@ use function unserialize;
  *
  * The cache assumes a command result is a function of the HEAD commit and the tags. A custom command that reads
  * anything else (working tree status, remotes, stashes) must not go through this decorator.
+ *
+ * Files are written 0644 and read back only when owned by the current process user, so on a shared machine another
+ * local user cannot plant a crafted result. Use a directory dedicated to the application (e.g. its temp directory):
+ * pruning removes the other `tgv-*.cache` files there, two applications sharing one directory would evict each other.
  */
 final class FileCachedGitRepository implements GitRepositoryInterface
 {
@@ -103,6 +110,12 @@ final class FileCachedGitRepository implements GitRepositoryInterface
         }
 
         $result = $this->inner->handle($command);
+
+        # the repository may have moved on while git was running; a result computed for the new state must not be filed under the old one
+        if ($fingerprint !== $this->fingerprint->compute()) {
+            return $result;
+        }
+
         $entries[$commandId] = $result;
         $this->store($fingerprint, $entries);
 
@@ -126,7 +139,8 @@ final class FileCachedGitRepository implements GitRepositoryInterface
         $filename = $this->filename($fingerprint);
         $entries = [];
 
-        if (is_readable($filename) && false !== ($content = @file_get_contents($filename))) {
+        # a file another local user could have written is never deserialized
+        if ($this->isOwnFile($filename) && false !== ($content = @file_get_contents($filename))) {
             $decoded = @unserialize($content, ['allowed_classes' => $this->allowedClasses]);
             $entries = is_array($decoded) ? $decoded : [];
 
@@ -148,7 +162,7 @@ final class FileCachedGitRepository implements GitRepositoryInterface
     {
         $this->loaded[$fingerprint] = $entries;
 
-        if (!is_dir($this->directory) && !@mkdir($this->directory, 0777, true) && !is_dir($this->directory)) {
+        if (!is_dir($this->directory) && !@mkdir($this->directory, 0755, true) && !is_dir($this->directory)) {
             return;
         }
 
@@ -171,12 +185,28 @@ final class FileCachedGitRepository implements GitRepositoryInterface
             return;
         }
 
-        # tempnam() creates the file with 0600; CLI and web server usually run as different users and both read the cache
-        @chmod($temporary, 0666);
+        # readable for everyone, writable only by the owner: a cache file another user could modify is never trusted (see isOwnFile)
+        @chmod($temporary, 0644);
 
         if (!@rename($temporary, $this->filename($fingerprint))) {
             @unlink($temporary);
         }
+    }
+
+    private function isOwnFile(string $filename): bool
+    {
+        if (!is_readable($filename)) {
+            return false;
+        }
+
+        $owner = @fileowner($filename);
+
+        # ownership cannot be checked on this platform: accept the file, permissions still protect it
+        if (false === $owner || !function_exists('getmyuid')) {
+            return true;
+        }
+
+        return $owner === getmyuid();
     }
 
     private function filename(string $fingerprint): string

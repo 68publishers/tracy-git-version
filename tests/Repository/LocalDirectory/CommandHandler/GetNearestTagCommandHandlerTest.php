@@ -152,6 +152,31 @@ final class GetNearestTagCommandHandlerTest extends TestCase
         }
     }
 
+    public function testTagNamedLikeTheBranchUsingBinary(): void
+    {
+        $repository = GitHelper::init();
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+            $taggedCommitId = $repository->getLastCommitId();
+            # a tag carrying the branch name is legal (git only warns about the ambiguity); the handler must address refs/tags/<name>
+            $repository->execute('tag', $repository->getCurrentBranchName());
+            GitHelper::createFile($repository, 'file2.txt', 'test');
+            $repository->commit('second');
+
+            $handler = new GetNearestTagCommandHandler(GitDirectory::createAutoDetected($repository->getRepositoryPath()), true);
+            $nearestTag = $handler(new GetNearestTagCommand());
+
+            Assert::type(NearestTag::class, $nearestTag);
+            Assert::same($repository->getCurrentBranchName(), $nearestTag->getTag()->getName());
+            Assert::same($taggedCommitId->toString(), $nearestTag->getTag()->getCommitHash()->getValue());
+            Assert::same(1, $nearestTag->getDistance());
+        } finally {
+            GitHelper::destroy($repository);
+        }
+    }
+
     public function testAnnotatedTagResolvesToTaggedCommitUsingBinary(): void
     {
         $repository = GitHelper::init();

@@ -68,6 +68,32 @@ final class FileCachedGitRepositoryTest extends TestCase
         }
     }
 
+    public function testResultComputedWhileTheStateChangedIsNotStored(): void
+    {
+        $repository = GitHelper::init();
+        $cacheDirectory = sys_get_temp_dir() . '/' . uniqid('tgv-cache-', true);
+
+        try {
+            GitHelper::createFile($repository, 'file.txt', 'test');
+            $repository->commit('first');
+
+            # the tag appears while the inner repository is "running git", so the result belongs to the new state
+            $inner = new CountingGitRepository(static function () use ($repository): ?NearestTag {
+                $repository->createTag('v1.0.0');
+
+                return null;
+            });
+            $fingerprint = new GitDirectoryFingerprint(GitDirectory::createAutoDetected($repository->getRepositoryPath()));
+
+            (new FileCachedGitRepository($inner, $fingerprint, $cacheDirectory))->handle(new GetNearestTagCommand());
+
+            Assert::same([], glob($cacheDirectory . '/tgv-*.cache') ?: []);
+        } finally {
+            GitHelper::destroy($repository);
+            FileSystem::delete($cacheDirectory);
+        }
+    }
+
     public function testIncompleteClassIsTreatedAsMiss(): void
     {
         $repository = GitHelper::init();
