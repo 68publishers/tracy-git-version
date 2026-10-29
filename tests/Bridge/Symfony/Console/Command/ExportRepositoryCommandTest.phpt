@@ -6,7 +6,6 @@ namespace SixtyEightPublishers\TracyGitVersion\Tests\Bridge\Symfony\Console\Comm
 
 use Exception;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Application;
-use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Command\ExportRepositoryCommand;
 use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -87,7 +86,6 @@ final class ExportRepositoryCommandTest extends TestCase
     private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();
-        $application->add(new ExportRepositoryCommand());
 
         $command = $application->find('export-repository');
         $commandTester = new CommandTester($command);

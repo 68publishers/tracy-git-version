@@ -10,24 +10,30 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.4
           coverage: pcov
           extensions: tokenizer
           tools: composer:v2
 
       - name: Install dependencies
-        run: composer update --no-progress --prefer-dist --prefer-stable --optimize-autoloader --quiet
+        run: composer update --no-progress --prefer-dist --prefer-stable --optimize-autoloader
 
       - name: Generate the coverage report
         run: vendor/bin/tester -C -s --coverage ./coverage.xml --coverage-src ./src ./tests

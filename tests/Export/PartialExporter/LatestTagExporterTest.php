@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersion\Tests\Export\PartialExporter;
 
+use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
 use SixtyEightPublishers\TracyGitVersion\Export\Config;
 use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\LatestTagExporter;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetLatestTagCommand;
@@ -17,6 +18,15 @@ require __DIR__ . '/../../bootstrap.php';
 
 final class LatestTagExporterTest extends TestCase
 {
+    public function testExportWithoutGitRepositoryThrowsException(): void
+    {
+        Assert::exception(
+            static fn () => (new LatestTagExporter())->export(Config::create(), null),
+            BadMethodCallException::class,
+            'Git repository for a partial exporter ' . LatestTagExporter::class . ' must be provided.',
+        );
+    }
+
     public function testExportLatestTag(): void
     {
         $exporter = new LatestTagExporter();

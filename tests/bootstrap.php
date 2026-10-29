@@ -12,6 +12,7 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 Environment::setup();
 Environment::bypassFinals();
 
-if (PHP_VERSION_ID >= 80200) {
-    error_reporting(~E_DEPRECATED);
+# The lowest versions of some third-party dependencies trigger deprecations on newer PHP versions (used by CI only)
+if (getenv('TESTS_IGNORE_DEPRECATIONS')) {
+    error_reporting(E_ALL & ~E_DEPRECATED);
 }

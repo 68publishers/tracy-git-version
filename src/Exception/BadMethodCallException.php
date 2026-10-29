@@ -27,8 +27,8 @@ final class BadMethodCallException extends \BadMethodCallException implements Ex
     {
         return new self(sprintf(
             'Can\'t add new handler %s for the command %s into Git repository of type %s.',
-            $commandClassname,
             $handlerClassname,
+            $commandClassname,
             ResolvableGitRepository::class,
         ));
     }

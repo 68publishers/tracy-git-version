@@ -18,6 +18,7 @@ Simple and extensible panel for [Tracy](https://github.com/nette/tracy) that sho
 ## Table of contents
 
 * [Installation](#installation)
+* [Upgrade](#upgrade)
 * [Basic integration](#basic-integration)
 * [Solution for application builds without Git](#solution-for-application-builds-without-git)
 * [Advanced guide](#advanced-guide)
@@ -31,6 +32,16 @@ The best way to install `68publishers/tracy-git-version` is using Composer:
 ```bash
 $ composer require 68publishers/tracy-git-version
 ```
+
+Requirements: PHP `^8.3` and `tracy/tracy` `^2.10`. The Nette integration needs `nette/di` `^3.1.3`, the export command `symfony/console` `^5.4.47 || ^6.4 || ^7.0 || ^8.0`.
+
+## Upgrade
+
+### From 1.x to 2.0
+
+- The minimal PHP version is 8.3, the minimal version of `tracy/tracy` is 2.10. The Nette integration needs `nette/di` 3.1.3 or newer, the export command `symfony/console` 5.4.47 or newer.
+- The command `export-repository` is named by the attribute `#[AsCommand]`, the static property `ExportRepositoryCommand::$defaultName` is removed. Lazy command loaders (e.g. `contributte/console` 0.10+) and `symfony/console` 7+ read the name from the attribute.
+- There are no other BC breaks in the API.
 
 ## Basic integration
 

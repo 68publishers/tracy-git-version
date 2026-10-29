@@ -9,6 +9,7 @@ use RuntimeException;
 use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
 use SixtyEightPublishers\TracyGitVersion\Export\Config;
 use SixtyEightPublishers\TracyGitVersion\Export\LocalDirectoryExporter;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,14 +26,12 @@ use function json_encode;
 use function mkdir;
 use function sprintf;
 
+#[AsCommand(name: 'export-repository', description: 'Clones important things from a git repository to the output directory.')]
 final class ExportRepositoryCommand extends Command
 {
-    protected static $defaultName = 'export-repository';
-
     protected function configure(): void
     {
-        $this->setName('export-repository')
-            ->setDescription('Clones important things from a git repository to the output directory.')
+        $this
             ->addOption('config', null, InputOption::VALUE_REQUIRED, 'The path to a config file.')
             ->addOption('output-file', null, InputOption::VALUE_REQUIRED, 'The filename of the output file.')
             ->addOption('dump-only', null, InputOption::VALUE_NONE, 'Dumps exported file into the console only.');

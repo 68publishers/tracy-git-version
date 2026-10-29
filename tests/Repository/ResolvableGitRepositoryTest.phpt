@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersion\Tests\Repository;
 
+use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
 use SixtyEightPublishers\TracyGitVersion\Exception\UnhandledCommandException;
 use SixtyEightPublishers\TracyGitVersion\Repository\ResolvableGitRepository;
 use SixtyEightPublishers\TracyGitVersion\Tests\Fixtures\Command\BarCommand;
@@ -111,6 +112,19 @@ final class ResolvableGitRepositoryTest extends TestCase
             },
             UnhandledCommandException::class,
             sprintf('Can\'t handle git command %s.', $unhandledCommand),
+        );
+    }
+
+    public function testHandlerCantBeAdded(): void
+    {
+        $repository = $this->createRepository([]);
+
+        Assert::exception(
+            static function () use ($repository) {
+                $repository->addHandler(FooCommand::class, new FooCommandHandler());
+            },
+            BadMethodCallException::class,
+            sprintf('Can\'t add new handler %s for the command %s into Git repository of type %s.', FooCommandHandler::class, FooCommand::class, ResolvableGitRepository::class),
         );
     }
 
