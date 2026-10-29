@@ -6,7 +6,6 @@ namespace SixtyEightPublishers\TracyGitVersion\Tests\Bridge\Symfony\Console\Comm
 
 use Exception;
 use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Application;
-use SixtyEightPublishers\TracyGitVersion\Bridge\Symfony\Console\Command\ExportRepositoryCommand;
 use SixtyEightPublishers\TracyGitVersion\Exception\ExportConfigException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -17,7 +16,6 @@ use function file_exists;
 use function file_get_contents;
 use function is_readable;
 use function json_decode;
-use function method_exists;
 use function unlink;
 
 require __DIR__ . '/../../../../bootstrap.php';
@@ -88,8 +86,6 @@ final class ExportRepositoryCommandTest extends TestCase
     private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();
-        # Application::add() was removed in symfony/console 8.0, addCommand() exists since 7.4
-        method_exists($application, 'addCommand') ? $application->addCommand(new ExportRepositoryCommand()) : $application->add(new ExportRepositoryCommand());
 
         $command = $application->find('export-repository');
         $commandTester = new CommandTester($command);
