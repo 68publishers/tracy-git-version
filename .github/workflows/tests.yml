@@ -10,16 +10,26 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   tests:
-    name: Unit Tests [PHP ${{ matrix.php-versions }}]
+    name: Unit Tests [PHP ${{ matrix.php-versions }}, ${{ matrix.dependencies }}]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0', '8.1', '8.2']
+        php-versions: ['8.3', '8.4', '8.5']
+        dependencies: ['highest']
+        include:
+          - php-versions: '8.3'
+            dependencies: 'lowest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -28,13 +38,7 @@ jobs:
           tools: composer:v2
 
       - name: Install dependencies
-        run: composer update --no-progress --prefer-dist --prefer-stable --optimize-autoloader --quiet
-
-      - name: Run tests
-        run: vendor/bin/tester -C -s ./tests
-
-      - name: Install dependencies (lowest)
-        run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable --optimize-autoloader --quiet
+        run: composer update --no-progress --prefer-dist --prefer-stable --optimize-autoloader --quiet ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
 
       - name: Run tests
         run: vendor/bin/tester -C -s ./tests

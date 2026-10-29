@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\TracyGitVersion\Tests\Export\PartialExporter;
 
+use SixtyEightPublishers\TracyGitVersion\Exception\BadMethodCallException;
 use SixtyEightPublishers\TracyGitVersion\Export\Config;
 use SixtyEightPublishers\TracyGitVersion\Export\PartialExporter\HeadExporter;
 use SixtyEightPublishers\TracyGitVersion\Repository\Command\GetHeadCommand;
@@ -17,6 +18,15 @@ require __DIR__ . '/../../bootstrap.php';
 
 final class HeadExporterTest extends TestCase
 {
+    public function testExportWithoutGitRepositoryThrowsException(): void
+    {
+        Assert::exception(
+            static fn () => (new HeadExporter())->export(Config::create(), null),
+            BadMethodCallException::class,
+            'Git repository for a partial exporter ' . HeadExporter::class . ' must be provided.',
+        );
+    }
+
     public function testExportHead(): void
     {
         $exporter = new HeadExporter();

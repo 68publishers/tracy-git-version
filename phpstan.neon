@@ -1,3 +1,17 @@
 includes:
 	- vendor/phpstan/phpstan-nette/extension.neon
 	- vendor/phpstan/phpstan-nette/rules.neon
+
+parameters:
+	level: 7
+	paths:
+		- src
+	ignoreErrors:
+		# Application::add() is used with symfony/console < 7.4 only, addCommand() exists since 7.4 and add() was removed in 8.0
+		-
+			identifiers:
+				- method.notFound
+				- function.impossibleType
+				- function.alreadyNarrowedType
+			path: src/Bridge/Symfony/Console/Application.php
+			reportUnmatched: false

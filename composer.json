@@ -1,7 +1,13 @@
 {
 	"name": "68publishers/tracy-git-version",
 	"description": "Git version panel for Tracy.",
-	"keywords": ["68publishers", "tracy", "git", "git version", "nette"],
+	"keywords": [
+		"68publishers",
+		"tracy",
+		"git",
+		"git version",
+		"nette"
+	],
 	"license": "MIT",
 	"authors": [
 		{
@@ -10,30 +16,31 @@
 		}
 	],
 	"require": {
-		"php": "^7.4 | ^8.0",
+		"php": "^8.3",
 		"ext-json": "*",
-		"tracy/tracy": "^2.6.0"
+		"tracy/tracy": "^2.10"
 	},
 	"require-dev": {
 		"czproject/git-php": "^4.2",
-		"friendsofphp/php-cs-fixer": "^3.13",
-		"nette/application": "^3.1.0",
+		"friendsofphp/php-cs-fixer": "^3.89",
+		"nette/application": "^3.1.15",
 		"nette/bootstrap": "^3.1",
-		"nette/di": "^3.0.10",
-		"nette/tester": "^2.4.3",
-		"phpstan/phpstan": "^1.9",
-		"phpstan/phpstan-nette": "^1.1",
+		"nette/di": "^3.1.3",
+		"nette/tester": "^2.6",
+		"phpstan/phpstan": "^2.1",
+		"phpstan/phpstan-nette": "^2.0",
 		"roave/security-advisories": "dev-latest",
-		"symfony/console": "^5.4 | ^6.0"
+		"symfony/console": "^5.4.47 || ^6.4 || ^7.0 || ^8.0"
 	},
 	"suggest": {
 		"nette/di": "For an integration with the Nette Framework.",
 		"symfony/console": "If you want to use a git repository cloning for production build purposes."
 	},
 	"conflict": {
-		"nette/di": "<3.0",
-		"nette/utils": "<3.2.5",
-		"nette/schema": "<1.2"
+		"nette/di": "<3.1.3",
+		"nette/utils": "<3.2.10",
+		"nette/schema": "<1.2.5",
+		"symfony/console": "<5.4.47"
 	},
 	"autoload": {
 		"psr-4": {
